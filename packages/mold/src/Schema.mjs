@@ -1,8 +1,8 @@
-export const Schema = (validate, expected, Default = null) => { // Schema
+const SimpleSchema = (validate, expected, Default = null) => { // Schema
 	const required = typeof Default !== 'function';
 
-	return Object.assign((role) => { // schema
-		return (_value) => { // normalize
+	return role => { // SchemaNormalizer
+		return _value => { // normalize
 			const has = _value !== undefined;
 
 			if (required && !has) {
@@ -10,48 +10,77 @@ export const Schema = (validate, expected, Default = null) => { // Schema
 			}
 
 			const value = has ? _value : Default();
-			const valid = validate(_value);
 
-			if (!valid) {
-				throw new TypeError(`Invalid ${role}, ${expected} expected.`);
+			if (!validate(value)) {
+				throw new TypeError(`Invalid "${role}", one "${expected}" expected.`);
 			}
 
 			return value;
 		};
-	}, {
-		validate,
-		Default
-	});
+	};
 };
 
-export const OptionalObjectSchema = (schemaMap, role) => {
-	const properties = {};
+const ObjectSchema = (NormalizerMap, options = {}) => {
+	const {
+		required = false,
+		expected = 'a plain object'
+	} = options;
 
-	for (const key in schemaMap) {
-		const schema = schemaMap[key](`${role}.${key}`);
+	return (role = '') => {
+		const normalizeMap = {};
 
-		properties[key] = schema;
-	}
+		for (const key in NormalizerMap) {
+			const PropertySchemaNormalizer = NormalizerMap[key];
+			const normalize = PropertySchemaNormalizer(`${role}.${key}`);
 
-	const validate = (any) => {
-		for (const key in properties) {
-			const schema = properties[key];
+			normalizeMap[key] = normalize;
+		}
 
-			if (!schema.validate(any)) {
-				return false;
+		return _object => {
+			const has = _object !== undefined;
+
+			if (required && !has) {
+				throw new TypeError(`One "${expected}" as "${role}" required.`);
 			}
-		}
 
-		return true;
+			_object = has ? _object : {};
+
+			if (typeof _object !== 'object') {
+				throw new TypeError(`Invalid ${role}, one ${expected} expected.`);
+			}
+
+			const object = {};
+
+			for (const key in normalizeMap) {
+				const normalize = normalizeMap[key];
+
+				object[key] = normalize(_object[key]);
+			}
+
+			return object;
+		};
 	};
+};
 
-	const Default = () => {
-		const object = {};
+const CustomSchema = (normalize) => {
+	return role => _value => normalize(role, _value);
+};
 
-		for (const key in properties) {
-			object[key] = properties[key].Default();
-		}
+const TupleSchema = (elementSchemaTuple) => {
+	return role => {
+
 	};
+};
 
-	return Schema(validate, 'a plain object', Default);
+const ArraySchema = (itemSchema, role) => {
+	return role => {
+
+	}
+};
+
+export {
+	SimpleSchema as Simple,
+	ObjectSchema as Object,
+	ArraySchema as Array,
+	CustomSchema as Custom
 };

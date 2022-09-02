@@ -1,0 +1,1 @@
+export { StructureExecuter as Stucture } from './Object.mjs';

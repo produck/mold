@@ -1,0 +1,21 @@
+{
+	"name": "@3dnest/mold-node",
+	"version": "0.0.0",
+	"description": "> TODO: description",
+	"author": "ChaosLee <chaos2lee@qq.com>",
+	"homepage": "https://github.com/produck/mold/tree/main/packages/mold-node#readme",
+	"license": "MIT",
+	"main": "index.js",
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/produck/mold.git"
+	},
+	"scripts": {
+	},
+	"bugs": {
+		"url": "https://github.com/produck/mold/issues"
+	}
+}

@@ -1,7 +1,32 @@
-import { Cause, MoldError } from './Internal/index.mjs';
+import { Cause, Type, Error } from './Internal/index.mjs';
 
-export const ObjectSchema = (normalizePropertyMap, options = {}) => {
+const Role = principal => `ObjectSchema() -> ${principal}`;
+
+export const ObjectSchema = (propertyNormalizeMap, options = {}) => {
+	if (!Type.PlainObjectLike(propertyNormalizeMap)) {
+		Error.ThrowMoldError(Role('propertyNormalizeMap'), 'plain object');
+	}
+
+	if (!Type.PlainObjectLike(options)) {
+		Error.ThrowMoldError(Role('options'), 'plain object');
+	}
+
+	for (const key in propertyNormalizeMap) {
+		if (!Type.Function(propertyNormalizeMap[key])) {
+			Error.ThrowMoldError(Role(`propertyNormalizeMap["${key}"]`), 'function');
+		}
+	}
+
 	const { required = false, expected = 'plain object' } = options;
+
+	if (!Type.Boolean(required)) {
+		Error.ThrowMoldError(Role('options.required'), 'boolean');
+	}
+
+	if (!Type.String(expected)) {
+		Error.ThrowMoldError(Role('options.expected'), 'string');
+	}
+
 	const cause = new Cause(required, expected);
 
 	return (_object, _empty = false) => {
@@ -13,14 +38,14 @@ export const ObjectSchema = (normalizePropertyMap, options = {}) => {
 
 		_object = _empty ? {} : _object;
 
-		if (typeof _object !== 'object') {
+		if (!Type.PlainObjectLike(_object)) {
 			cause.throw();
 		}
 
 		const object = {};
 
-		for (const key in normalizePropertyMap) {
-			const normalize = normalizePropertyMap[key];
+		for (const key in propertyNormalizeMap) {
+			const normalize = propertyNormalizeMap[key];
 			const has = Object.prototype.hasOwnProperty.call(_object, key);
 
 			try {

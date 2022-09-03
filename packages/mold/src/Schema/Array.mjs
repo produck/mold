@@ -1,25 +1,30 @@
-export const ArraySchema = (itemSchema, options = {}) => {
-	const {
-		require: required = false,
-		expected = 'array'
-	} = options;
+import { Cause, MoldError } from './Internal/index.mjs';
 
-	return role => {
-		const normalizeItem = itemSchema(`${role}[?]`);
-		const toNormalize = (_item) => normalizeItem(_item, false);
+export const ArraySchema = (normalizeItem, options = {}) => {
+	const { required = false, expected = 'array' } = options;
+	const cause = new Cause(required, expected);
 
-		return (_array, _empty) => {
-			if (required && _empty) {
-				throw new TypeError(`One "${expected}" as "${role}" required.`);
-			}
+	const toNormalize = (_item, index) => {
+		try {
+			return normalizeItem(_item);
+		} catch (innerCause) {
+			innerCause.append(index).throw();
+		}
+	};
 
-			_array = _empty ? [] : _array;
+	return (_array, _empty) => {
+		cause.clear();
 
-			if (!Array.isArray(_array)) {
-				throw new TypeError(`Invalid ${role}, one ${expected} expected.`);
-			}
+		if (required && _empty) {
+			cause.throw();
+		}
 
-			return _array.map(toNormalize);
-		};
+		_array = _empty ? [] : _array;
+
+		if (!Array.isArray(_array)) {
+			cause.throw();
+		}
+
+		return _array.map(toNormalize);
 	};
 };

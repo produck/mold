@@ -1,40 +1,35 @@
-export const ObjectSchema = (NormalizerMap, options = {}) => {
-	const {
-		required = false,
-		expected = 'plain object'
-	} = options;
+import { Cause, MoldError } from './Internal/index.mjs';
 
-	return (role = '') => {
-		const normalizeMap = {};
+export const ObjectSchema = (normalizePropertyMap, options = {}) => {
+	const { required = false, expected = 'plain object' } = options;
+	const cause = new Cause(required, expected);
 
-		for (const key in NormalizerMap) {
-			const PropertySchemaNormalizer = NormalizerMap[key];
-			const normalize = PropertySchemaNormalizer(`${role}.${key}`);
+	return (_object, _empty = false) => {
+		cause.clear();
 
-			normalizeMap[key] = normalize;
+		if (required && _empty) {
+			cause.throw();
 		}
 
-		return (_object, _empty = false) => {
-			if (required && _empty) {
-				throw new TypeError(`One "${expected}" as "${role}" required.`);
-			}
+		_object = _empty ? {} : _object;
 
-			_object = _empty ? {} : _object;
+		if (typeof _object !== 'object') {
+			cause.throw();
+		}
 
-			if (typeof _object !== 'object') {
-				throw new TypeError(`Invalid ${role}, one ${expected} expected.`);
-			}
+		const object = {};
 
-			const object = {};
+		for (const key in normalizePropertyMap) {
+			const normalize = normalizePropertyMap[key];
+			const has = Object.prototype.hasOwnProperty.call(_object, key);
 
-			for (const key in normalizeMap) {
-				const normalize = normalizeMap[key];
-				const has = Object.prototype.hasOwnProperty.call(_object, key);
-
+			try {
 				object[key] = normalize(_object[key], !has);
+			} catch (innerCause) {
+				innerCause.append(key).throw();
 			}
+		}
 
-			return object;
-		};
+		return object;
 	};
 };

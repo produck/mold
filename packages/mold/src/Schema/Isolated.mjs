@@ -1,19 +1,22 @@
+import { Cause, MoldError } from './Internal/index.mjs';
+
 export const IsolatedSchema = (validate, expected, Default = null) => {
 	const required = typeof Default !== 'function';
+	const cause = new Cause(required, expected);
 
-	return (role = 'value') => {
-		return (_value, _empty = false) => {
-			if (required && _empty) {
-				throw new TypeError(`A value as "${role}" required.`);
-			}
+	return (_value, _empty = false) => {
+		cause.clear();
 
-			const value = _empty ? Default() : _value;
+		if (required && _empty) {
+			cause.throw();
+		}
 
-			if (!validate(value)) {
-				throw new TypeError(`Invalid "${role}", one "${expected}" expected.`);
-			}
+		const value = _empty ? Default() : _value;
 
-			return value;
-		};
+		if (!validate(value)) {
+			cause.throw();
+		}
+
+		return value;
 	};
 };

@@ -1,3 +1,3 @@
 export const CustomSchema = (normalize) => {
-	return (role = '') => (_value, _empty) => normalize(role, _value, _empty);
+	return (_value, _empty) => normalize(_value, _empty);
 };

@@ -1,14 +1,15 @@
-import { Cause, Type, Error, Options } from './Internal/index.mjs';
+import { Cause, Error, Options } from '../utils/index.mjs';
+import * as Type from '../Type/index.mjs';
 
 export const TupleSchema = (elementNormalizeList, options = {}) => {
 	Options.assert(options);
 
-	if (!Type.Array(elementNormalizeList)) {
+	if (!Type.Object.Array(elementNormalizeList)) {
 		Error.ThrowMoldError('elementNormalizeList', 'array');
 	}
 
 	elementNormalizeList.forEach((normalize, index) => {
-		if (!Type.Function(normalize)) {
+		if (!Type.Native.Function(normalize)) {
 			Error.ThrowMoldError(`elementNormalizeList[${index}]`, 'function');
 		}
 	});
@@ -21,7 +22,7 @@ export const TupleSchema = (elementNormalizeList, options = {}) => {
 	} = options;
 
 	const length = elementNormalizeList.length;
-	const required = Type.Null(Default);
+	const required = Type.Object.Null(Default);
 	const cause = new Cause(required, expected);
 
 	function toFinalElement(normalizeElement, index) {
@@ -44,7 +45,7 @@ export const TupleSchema = (elementNormalizeList, options = {}) => {
 
 			_tuple = _isEmpty ? Default() :_tuple;
 
-			if (!Type.Array(_tuple)) {
+			if (!Type.Object.Array(_tuple)) {
 				cause.throw();
 			}
 

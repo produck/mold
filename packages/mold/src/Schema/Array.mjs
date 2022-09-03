@@ -1,9 +1,10 @@
-import { Cause, Type, Error, Options } from './Internal/index.mjs';
+import { Cause, Error, Options } from '../utils/index.mjs';
+import * as Type from '../Type/index.mjs';
 
 export const ArraySchema = (normalizeItem, options = {}) => {
 	Options.assert(options);
 
-	if (!Type.Function(normalizeItem)) {
+	if (!Type.Native.Function(normalizeItem)) {
 		Error.ThrowMoldError('normalizeItem', 'function');
 	}
 
@@ -14,7 +15,7 @@ export const ArraySchema = (normalizeItem, options = {}) => {
 		modify = () => {}
 	} = options;
 
-	const required = Type.Null(Default);
+	const required = Type.Object.Null(Default);
 	const cause = new Cause(required, expected);
 
 	const toNormalized = (_item, index) => {
@@ -35,7 +36,7 @@ export const ArraySchema = (normalizeItem, options = {}) => {
 
 			_array = _empty ? Default() : _array;
 
-			if (!Type.Array(_array)) {
+			if (!Type.Object.Array(_array)) {
 				cause.throw();
 			}
 

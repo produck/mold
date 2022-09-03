@@ -1,6 +1,6 @@
 import * as Schema from './Schema/index.mjs';
 
-export const DefaultCauseMessage = cause => {
+export const SimpleCauseMessage = cause => {
 	const pathSectionList = [];
 
 	for (const key of cause.path) {
@@ -20,7 +20,7 @@ export const DefaultCauseMessage = cause => {
 	].join(' ');
 };
 
-export const Normalizer = (schema, CauseMessage = DefaultCauseMessage) => {
+export const Normalizer = (schema, CauseMessage = SimpleCauseMessage) => {
 	return (...args) => {
 		try {
 			return schema(...args);

@@ -1,14 +1,15 @@
-import { Cause, Type, Error, Options } from './Internal/index.mjs';
+import { Cause, Error, Options } from '../utils/index.mjs';
+import * as Type from '../Type/index.mjs';
 
 export const ObjectSchema = (propertyNormalizeMap, options = {}) => {
 	Options.assert(options);
 
-	if (!Type.PlainObjectLike(propertyNormalizeMap)) {
+	if (!Type.Object.PlainLike(propertyNormalizeMap)) {
 		Error.ThrowMoldError('propertyNormalizeMap', 'plain object');
 	}
 
 	for (const key in propertyNormalizeMap) {
-		if (!Type.Function(propertyNormalizeMap[key])) {
+		if (!Type.Native.Function(propertyNormalizeMap[key])) {
 			Error.ThrowMoldError(`propertyNormalizeMap["${key}"]`, 'function');
 		}
 	}
@@ -20,7 +21,7 @@ export const ObjectSchema = (propertyNormalizeMap, options = {}) => {
 		modify = () => {}
 	} = options;
 
-	const required = Type.Null(Default);
+	const required = Type.Object.Null(Default);
 	const cause = new Cause(required, expected);
 
 	return {
@@ -33,7 +34,7 @@ export const ObjectSchema = (propertyNormalizeMap, options = {}) => {
 
 			_object = _empty ? Default() : _object;
 
-			if (!Type.PlainObjectLike(_object)) {
+			if (!Type.Object.PlainLike(_object)) {
 				cause.throw();
 			}
 

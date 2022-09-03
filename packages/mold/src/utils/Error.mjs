@@ -1,12 +1,12 @@
-export class MoldError extends Error {
+export class MoldSchemaError extends Error {
 	constructor(message) {
 		super(message);
-		this.name = 'MoldError';
+		this.name = 'MoldSchemaError';
 	}
 }
 
 export const Throw = message => {
-	throw new MoldError(message);
+	throw new MoldSchemaError(message);
 };
 
 export const Message = (role, expected) => {

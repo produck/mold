@@ -1,33 +1,33 @@
 import * as Error from './Error.mjs';
-import * as Type from './Type.mjs';
+import * as Type from '../Type/index.mjs';
 
 const assertSchemaOptions = any => {
-	if (!Type.PlainObjectLike(any)) {
+	if (!Type.Object.PlainLike(any)) {
 		Error.ThrowMoldError('schema options', 'plain object');
 	}
 
 	const { expected, Default, modify, name } = any;
 
-	if (!Type.Undefined(name)) {
-		if (!Type.String(name)) {
+	if (!Type.Native.Undefined(name)) {
+		if (!Type.Native.String(name)) {
 			Error.ThrowMoldError('schema options.name', 'string');
 		}
 	}
 
-	if (!Type.Undefined(expected)) {
-		if (!Type.String(expected)) {
+	if (!Type.Native.Undefined(expected)) {
+		if (!Type.Native.String(expected)) {
 			Error.ThrowMoldError('schema options.required', 'string');
 		}
 	}
 
-	if (!Type.Undefined(Default)) {
-		if (!Type.Function(Default) && !Type.Null(Default)) {
+	if (!Type.Native.Undefined(Default)) {
+		if (!Type.Native.Function(Default) && !Type.Native.Null(Default)) {
 			Error.ThrowMoldError('schema options.Default', 'function or null');
 		}
 	}
 
-	if (!Type.Undefined(modify)) {
-		if (!Type.Function(modify)) {
+	if (!Type.Native.Undefined(modify)) {
+		if (!Type.Native.Function(modify)) {
 			Error.ThrowMoldError('schema options.modify', 'function');
 		}
 	}

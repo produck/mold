@@ -9,13 +9,6 @@ const isObject = any => isType(any, 'object');
 const isSymbol = any => isType(any, 'symbol');
 const isBigInt = any => isType(any, 'bigint');
 
-const isNull = any => any === null;
-const isArray = any => Array.isArray(any);
-
-const isPlainObjectLike = any => {
-	return isObject(any) && !isNull(any) && !isArray(any);
-};
-
 export {
 	isUndefined as Undefined,
 	isNumber as Number,
@@ -25,7 +18,4 @@ export {
 	isObject as Object,
 	isSymbol as Symbol,
 	isBigInt as BigInt,
-	isNull as Null,
-	isArray as Array,
-	isPlainObjectLike as PlainObjectLike
 };

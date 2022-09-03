@@ -1,60 +1,58 @@
-import { Cause, Type, Error } from './Internal/index.mjs';
-
-const Role = principal => `ObjectSchema() -> ${principal}`;
+import { Cause, Type, Error, Options } from './Internal/index.mjs';
 
 export const ObjectSchema = (propertyNormalizeMap, options = {}) => {
-	if (!Type.PlainObjectLike(propertyNormalizeMap)) {
-		Error.ThrowMoldError(Role('propertyNormalizeMap'), 'plain object');
-	}
+	Options.assert(options);
 
-	if (!Type.PlainObjectLike(options)) {
-		Error.ThrowMoldError(Role('options'), 'plain object');
+	if (!Type.PlainObjectLike(propertyNormalizeMap)) {
+		Error.ThrowMoldError('propertyNormalizeMap', 'plain object');
 	}
 
 	for (const key in propertyNormalizeMap) {
 		if (!Type.Function(propertyNormalizeMap[key])) {
-			Error.ThrowMoldError(Role(`propertyNormalizeMap["${key}"]`), 'function');
+			Error.ThrowMoldError(`propertyNormalizeMap["${key}"]`, 'function');
 		}
 	}
 
-	const { required = false, expected = 'plain object' } = options;
+	const {
+		name = 'Object',
+		expected = 'plain object',
+		Default = () => ({}),
+		modify = () => {}
+	} = options;
 
-	if (!Type.Boolean(required)) {
-		Error.ThrowMoldError(Role('options.required'), 'boolean');
-	}
-
-	if (!Type.String(expected)) {
-		Error.ThrowMoldError(Role('options.expected'), 'string');
-	}
-
+	const required = Type.Null(Default);
 	const cause = new Cause(required, expected);
 
-	return (_object, _empty = false) => {
-		cause.clear();
+	return {
+		[name]: (_object, _empty = false) => {
+			cause.clear();
 
-		if (required && _empty) {
-			cause.throw();
-		}
-
-		_object = _empty ? {} : _object;
-
-		if (!Type.PlainObjectLike(_object)) {
-			cause.throw();
-		}
-
-		const object = {};
-
-		for (const key in propertyNormalizeMap) {
-			const normalize = propertyNormalizeMap[key];
-			const has = Object.prototype.hasOwnProperty.call(_object, key);
-
-			try {
-				object[key] = normalize(_object[key], !has);
-			} catch (innerCause) {
-				innerCause.append(key).throw();
+			if (required && _empty) {
+				cause.throw();
 			}
-		}
 
-		return object;
-	};
+			_object = _empty ? Default() : _object;
+
+			if (!Type.PlainObjectLike(_object)) {
+				cause.throw();
+			}
+
+			const object = {};
+
+			for (const key in propertyNormalizeMap) {
+				const normalize = propertyNormalizeMap[key];
+				const has = Object.prototype.hasOwnProperty.call(_object, key);
+
+				try {
+					object[key] = normalize(_object[key], !has);
+				} catch (innerCause) {
+					innerCause.append(key).throw();
+				}
+			}
+
+			modify(object);
+
+			return object;
+		}
+	}[name];
 };

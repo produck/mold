@@ -1,33 +1,27 @@
-import { Cause, Type, Error } from './Internal/index.mjs';
-
-const Role = principal => `TupleSchema() -> ${principal}`;
+import { Cause, Type, Error, Options } from './Internal/index.mjs';
 
 export const TupleSchema = (elementNormalizeList, options = {}) => {
-	if (!Type.Array(elementNormalizeList)) {
-		Error.ThrowMoldError(Role('elementNormalizeList'), 'array');
-	}
+	Options.assert(options);
 
-	if (!Type.PlainObjectLike(options)) {
-		Error.ThrowMoldError(Role('options'), 'plain object');
+	if (!Type.Array(elementNormalizeList)) {
+		Error.ThrowMoldError('elementNormalizeList', 'array');
 	}
 
 	elementNormalizeList.forEach((normalize, index) => {
 		if (!Type.Function(normalize)) {
-			Error.ThrowMoldError(Role(`elementNormalizeList[${index}]`), 'function');
+			Error.ThrowMoldError(`elementNormalizeList[${index}]`, 'function');
 		}
 	});
 
-	const { required = false, expected = `array(length=${length})` } = options;
-
-	if (!Type.Boolean(required)) {
-		Error.ThrowMoldError(Role('options.required'), 'boolean');
-	}
-
-	if (!Type.String(expected)) {
-		Error.ThrowMoldError(Role('options.expected'), 'string');
-	}
+	const {
+		name = 'Tuple',
+		expected = `array(${length})`,
+		Default = () => [],
+		modify = () => {}
+	} = options;
 
 	const length = elementNormalizeList.length;
+	const required = Type.Null(Default);
 	const cause = new Cause(required, expected);
 
 	function toFinalElement(normalizeElement, index) {
@@ -40,23 +34,29 @@ export const TupleSchema = (elementNormalizeList, options = {}) => {
 		}
 	}
 
-	return (_tuple, _isEmpty) => {
-		cause.clear();
+	return {
+		[name]: (_tuple, _isEmpty) => {
+			cause.clear();
 
-		if (required && _isEmpty) {
-			cause.throw();
+			if (required && _isEmpty) {
+				cause.throw();
+			}
+
+			_tuple = _isEmpty ? Default() :_tuple;
+
+			if (!Type.Array(_tuple)) {
+				cause.throw();
+			}
+
+			if (_tuple.length > length) {
+				cause.throw();
+			}
+
+			const tuple = elementNormalizeList.map(toFinalElement, _tuple);
+
+			modify(tuple);
+
+			return tuple;
 		}
-
-		_tuple = _isEmpty ? [] :_tuple;
-
-		if (!Type.Array(_tuple)) {
-			cause.throw();
-		}
-
-		if (_tuple.length > length) {
-			cause.throw();
-		}
-
-		return elementNormalizeList.map(toFinalElement, _tuple);
-	};
+	}[name];
 };

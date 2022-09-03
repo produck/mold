@@ -1,26 +1,20 @@
-import { Cause, Type, Error } from './Internal/index.mjs';
-
-const Role = principal => `ArraySchema() -> ${principal}`;
+import { Cause, Type, Error, Options } from './Internal/index.mjs';
 
 export const ArraySchema = (normalizeItem, options = {}) => {
+	Options.assert(options);
+
 	if (!Type.Function(normalizeItem)) {
-		Error.ThrowMoldError(Role('normalizeItem'), 'function');
+		Error.ThrowMoldError('normalizeItem', 'function');
 	}
 
-	if (!Type.PlainObjectLike(options)) {
-		Error.ThrowMoldError(Role('options'), 'plain object');
-	}
+	const {
+		name = 'Array',
+		expected = 'array',
+		Default = () => [],
+		modify = () => {}
+	} = options;
 
-	const { required = false, expected = 'array' } = options;
-
-	if (!Type.Boolean(required)) {
-		Error.ThrowMoldError(Role('options.required'), 'boolean');
-	}
-
-	if (!Type.String(expected)) {
-		Error.ThrowMoldError(Role('options.expected'), 'string');
-	}
-
+	const required = Type.Null(Default);
 	const cause = new Cause(required, expected);
 
 	const toNormalized = (_item, index) => {
@@ -31,21 +25,25 @@ export const ArraySchema = (normalizeItem, options = {}) => {
 		}
 	};
 
-	const arraySchema = (_array, _empty) => {
-		cause.clear();
+	return {
+		[name]: (_array, _empty) => {
+			cause.clear();
 
-		if (required && _empty) {
-			cause.throw();
+			if (required && _empty) {
+				cause.throw();
+			}
+
+			_array = _empty ? Default() : _array;
+
+			if (!Type.Array(_array)) {
+				cause.throw();
+			}
+
+			const array = _array.map(toNormalized);
+
+			modify(array);
+
+			return array;
 		}
-
-		_array = _empty ? [] : _array;
-
-		if (!Type.Array(_array)) {
-			cause.throw();
-		}
-
-		return _array.map(toNormalized);
-	};
-
-	return arraySchema;
+	}[name];
 };

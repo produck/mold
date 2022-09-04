@@ -1,14 +1,14 @@
-import * as Schema from './Schema/index.mjs';
+import * as Type from './Type/index.mjs';
 
 export const SimpleCauseMessage = cause => {
 	const pathSectionList = [];
 
 	for (const key of cause.path) {
-		if (Schema.Internal.Type.String(key)) {
+		if (Type.Native.String(key)) {
 			pathSectionList.push(`.${key}`);
 		}
 
-		if (Schema.Internal.Type.Number(key)) {
+		if (Type.Native.Number(key)) {
 			pathSectionList.push(`[${key}]`);
 		}
 	}

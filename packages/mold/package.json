@@ -1,7 +1,7 @@
 {
 	"name": "@produck/mold",
 	"version": "0.0.0",
-	"description": "For helping to generate a final options object in a specification.",
+	"description": "For helping to create a final options from a defined specification.",
 	"keywords": [
 		"options",
 		"normalize",
@@ -11,8 +11,14 @@
 	"homepage": "https://github.com/produck/mold/tree/main/packages/mold#readme",
 	"license": "MIT",
 	"type": "module",
+	"types": "index.d.js",
+	"files": [
+		"dist",
+		"src",
+		"index.d.ts"
+	],
 	"exports": {
-		"import": "./dist/mold.mjs",
+		"import": "./src/index.mjs",
 		"require": "./dist/mold.cjs"
 	},
 	"main": "index.js",
@@ -29,6 +35,6 @@
 	"devDependencies": {
 		"c8": "^7.12.0",
 		"mocha": "^10.0.0",
-		"rollup": "^2.78.1"
+		"rollup": "^2.79.0"
 	}
 }

@@ -21,7 +21,7 @@ const assertSchemaOptions = any => {
 	}
 
 	if (!Type.Native.Undefined(Default)) {
-		if (!Type.Native.Function(Default) && !Type.Native.Null(Default)) {
+		if (!Type.Native.Function(Default) && !Type.Object.Null(Default)) {
 			Error.ThrowMoldError('schema options.Default', 'function or null');
 		}
 	}

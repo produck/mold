@@ -21,9 +21,9 @@ export const SimpleCauseMessage = cause => {
 };
 
 export const Normalizer = (schema, CauseMessage = SimpleCauseMessage) => {
-	return (...args) => {
+	return (_value) => {
 		try {
-			return schema(...args);
+			return schema(_value);
 		} catch (cause) {
 			const message = CauseMessage(cause);
 

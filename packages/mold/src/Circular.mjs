@@ -6,8 +6,8 @@ export const Circular = (SchemaProxy) => {
 		Error.ThrowMoldError('SchemaProxy', 'function');
 	}
 
-	const Reference = (...args) => schema(...args);
-	const schema = SchemaProxy(Reference);
+	const reference = (...args) => schema(...args);
+	const schema = SchemaProxy(reference);
 
 	if (!Type.Native.Function(schema)) {
 		Error.ThrowMoldError('referenced schema', 'function');

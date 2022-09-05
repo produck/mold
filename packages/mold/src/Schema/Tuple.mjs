@@ -1,8 +1,8 @@
 import { Cause, Error, Options } from '../utils/index.mjs';
 import * as Type from '../Type/index.mjs';
 
-export const TupleSchema = (elementNormalizeList, options = {}) => {
-	Options.assert(options);
+export const TupleSchema = (elementNormalizeList, schemaOptions = {}) => {
+	Options.assert(schemaOptions);
 
 	if (!Type.Object.Array(elementNormalizeList)) {
 		Error.ThrowMoldError('elementNormalizeList', 'array');
@@ -19,7 +19,7 @@ export const TupleSchema = (elementNormalizeList, options = {}) => {
 		expected = `array(${length})`,
 		Default = () => [],
 		modify = () => {}
-	} = options;
+	} = schemaOptions;
 
 	const length = elementNormalizeList.length;
 	const required = Type.Object.Null(Default);

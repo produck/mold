@@ -1,8 +1,8 @@
 import { Cause, Error, Options } from '../utils/index.mjs';
 import * as Type from '../Type/index.mjs';
 
-export const ObjectSchema = (propertyNormalizeMap, options = {}) => {
-	Options.assert(options);
+export const ObjectSchema = (propertyNormalizeMap, schemaOptions = {}) => {
+	Options.assert(schemaOptions);
 
 	if (!Type.Object.PlainLike(propertyNormalizeMap)) {
 		Error.ThrowMoldError('propertyNormalizeMap', 'plain object');
@@ -19,7 +19,7 @@ export const ObjectSchema = (propertyNormalizeMap, options = {}) => {
 		expected = 'plain object',
 		Default = () => ({}),
 		modify = () => {}
-	} = options;
+	} = schemaOptions;
 
 	const required = Type.Object.Null(Default);
 	const cause = new Cause(required, expected);

@@ -1,11 +1,17 @@
 import { Cause, Error, Options } from '../utils/index.mjs';
 import * as Type from '../Type/index.mjs';
 
-export const ArraySchema = (normalizeItem, options = {}) => {
-	Options.assert(options);
+export const ArraySchema = (arrayOptions, schemaOptions = {}) => {
+	Options.assert(schemaOptions);
 
-	if (!Type.Native.Function(normalizeItem)) {
-		Error.ThrowMoldError('normalizeItem', 'function');
+	if (!Type.Object.PlainLike(arrayOptions)) {
+		Error.ThrowMoldError('arrayOptions', 'plain object');
+	}
+
+	const { item: itemSchema } = arrayOptions;
+
+	if (!Type.Native.Function(itemSchema)) {
+		Error.ThrowMoldError('arrayOptions.item', 'function');
 	}
 
 	const {
@@ -13,14 +19,14 @@ export const ArraySchema = (normalizeItem, options = {}) => {
 		expected = 'array',
 		Default = () => [],
 		modify = () => {}
-	} = options;
+	} = schemaOptions;
 
 	const required = Type.Object.Null(Default);
 	const cause = new Cause(required, expected);
 
 	const toNormalized = (_item, index) => {
 		try {
-			return normalizeItem(_item);
+			return itemSchema(_item);
 		} catch (innerCause) {
 			innerCause.append(index).throw();
 		}

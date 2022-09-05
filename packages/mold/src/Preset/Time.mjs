@@ -15,7 +15,7 @@ const TimestampSchema = (options) => {
 
 export { TimestampSchema as Schema };
 
-export const OffsetNow = (value) => {
+export const Offset = (value) => {
 	if (!Type.Number.Integer(value)) {
 
 	}

@@ -1,11 +1,19 @@
 import * as Schema from '../Schema/index.mjs';
 import * as Type from '../Type/index.mjs';
 
-export const Pattern = (regexp) => {
-	return Schema.Simplex(Type.Number.Integer, {
-		name: 'PresetString',
-		Default: defaultValue === null ? null : () => defaultValue,
-		expected: 'integer'
+const ALL_REGEXP = /.*/;
+
+const BASE_SCHEMA_OPTIONS = {
+	name: 'PresetString',
+};
+
+export const Pattern = (regexp = ALL_REGEXP, options) => {
+	const validate = any => Type.Native.String(any) && regexp.test(any);
+
+	return Schema.Simplex(validate, {
+		...BASE_SCHEMA_OPTIONS,
+		...options,
+		expected: `string like ${regexp.source}`
 	});
 };
 
@@ -20,6 +28,8 @@ export const Min = () => {
 export const Length = () => {
 
 };
+
+export const empty = Pattern(ALL_REGEXP, { Default: () => '' });
 
 // export const hex = Pattern();
 

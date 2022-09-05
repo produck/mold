@@ -1,8 +1,8 @@
 import { Cause, Error, Options } from '../utils/index.mjs';
 import * as Type from '../Type/index.mjs';
 
-export const SimplexSchema = (validate, options) => {
-	Options.assert(options);
+export const SimplexSchema = (validate, schemaOptions) => {
+	Options.assert(schemaOptions);
 
 	if (!Type.Native.Function(validate)) {
 		Error.ThrowMoldError('validate', 'function');
@@ -13,7 +13,7 @@ export const SimplexSchema = (validate, options) => {
 		expected,
 		Default = null,
 		modify = () => {}
-	} = options;
+	} = schemaOptions;
 
 	const required = !Type.Native.Function(Default);
 	const cause = new Cause(required, expected);

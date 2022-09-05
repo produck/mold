@@ -23,7 +23,7 @@ export const TupleSchema = (elementNormalizeList, schemaOptions = {}) => {
 
 	const length = elementNormalizeList.length;
 	const required = Type.Object.Null(Default);
-	const cause = new Cause(required, expected);
+	const throwCause = Cause.Thrower(required, expected);
 
 	function toFinalElement(normalizeElement, index) {
 		const tuple = this;
@@ -37,25 +37,27 @@ export const TupleSchema = (elementNormalizeList, schemaOptions = {}) => {
 
 	return {
 		[name]: (_tuple, _isEmpty) => {
-			cause.clear();
-
 			if (required && _isEmpty) {
-				cause.throw();
+				throwCause();
 			}
 
 			_tuple = _isEmpty ? Default() :_tuple;
 
 			if (!Type.Object.Array(_tuple)) {
-				cause.throw();
+				throwCause(_tuple);
 			}
 
 			if (_tuple.length > length) {
-				cause.throw();
+				throwCause(_tuple);
 			}
 
 			const tuple = elementNormalizeList.map(toFinalElement, _tuple);
 
-			modify(tuple);
+			try {
+				modify(tuple);
+			} catch (error) {
+				throwCause(tuple, error);
+			}
 
 			return tuple;
 		}

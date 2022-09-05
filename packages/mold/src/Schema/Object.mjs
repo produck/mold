@@ -22,20 +22,18 @@ export const ObjectSchema = (propertyNormalizeMap, schemaOptions = {}) => {
 	} = schemaOptions;
 
 	const required = Type.Object.Null(Default);
-	const cause = new Cause(required, expected);
+	const throwCause = Cause.Thrower(required, expected);
 
 	return {
 		[name]: (_object, _empty = false) => {
-			cause.clear();
-
 			if (required && _empty) {
-				cause.throw();
+				throwCause();
 			}
 
 			_object = _empty ? Default() : _object;
 
 			if (!Type.Object.PlainLike(_object)) {
-				cause.throw();
+				throwCause(_object);
 			}
 
 			const object = {};
@@ -51,7 +49,11 @@ export const ObjectSchema = (propertyNormalizeMap, schemaOptions = {}) => {
 				}
 			}
 
-			modify(object);
+			try {
+				modify(object);
+			} catch (error) {
+				throwCause(object, error);
+			}
 
 			return object;
 		}

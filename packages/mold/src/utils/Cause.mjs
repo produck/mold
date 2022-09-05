@@ -1,19 +1,27 @@
-export class Cause {
+export class MoldCauseError extends Error {
 	constructor(required, expected) {
+		super('');
+
+		this.name = 'MoldCauseError';
+
 		this.required = required;
 		this.expected = expected;
+
+		this.value = undefined;
+		this.more = null;
+
 		this.path = [];
-		Object.freeze(this);
 	}
 
-	clear() {
-		this.path.splice(0);
+	append(key, type) {
+		this.path.unshift({ key, type });
 
 		return this;
 	}
 
-	append(node) {
-		this.path.unshift(node);
+	occur(value, more = null) {
+		this.value = value;
+		this.more = more;
 
 		return this;
 	}
@@ -22,3 +30,10 @@ export class Cause {
 		throw this;
 	}
 }
+
+export const Thrower = (required, expected) => {
+	return (value = undefined, more = null) => {
+		return new MoldCauseError(required, expected)
+			.occur(value, more).throw();
+	};
+};

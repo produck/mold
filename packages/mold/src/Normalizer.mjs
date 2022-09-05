@@ -3,13 +3,13 @@ import * as Type from './Type/index.mjs';
 export const SimpleCauseMessage = cause => {
 	const pathSectionList = [];
 
-	for (const key of cause.path) {
-		if (Type.Native.String(key)) {
-			pathSectionList.push(`.${key}`);
+	for (const node of cause.path) {
+		if (Type.Native.String(node.key)) {
+			pathSectionList.push(`.${node.key}`);
 		}
 
-		if (Type.Native.Number(key)) {
-			pathSectionList.push(`[${key}]`);
+		if (Type.Native.Number(node.key)) {
+			pathSectionList.push(`[${node.key}]`);
 		}
 	}
 

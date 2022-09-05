@@ -22,33 +22,36 @@ export const ArraySchema = (arrayOptions, schemaOptions = {}) => {
 	} = schemaOptions;
 
 	const required = Type.Object.Null(Default);
-	const cause = new Cause(required, expected);
 
 	const toNormalized = (_item, index) => {
 		try {
 			return itemSchema(_item);
 		} catch (innerCause) {
-			innerCause.append(index).throw();
+			innerCause.append(index, 'Array').throw();
 		}
 	};
 
+	const throwCause = Cause.Thrower(required, expected);
+
 	return {
 		[name]: (_array, _empty) => {
-			cause.clear();
-
 			if (required && _empty) {
-				cause.throw();
+				throwCause();
 			}
 
 			_array = _empty ? Default() : _array;
 
 			if (!Type.Object.Array(_array)) {
-				cause.throw();
+				throwCause(_array);
 			}
 
 			const array = _array.map(toNormalized);
 
-			modify(array);
+			try {
+				modify(array);
+			} catch (error) {
+				throwCause(array, error);
+			}
 
 			return array;
 		}

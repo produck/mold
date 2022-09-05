@@ -16,23 +16,25 @@ export const SimplexSchema = (validate, schemaOptions) => {
 	} = schemaOptions;
 
 	const required = !Type.Native.Function(Default);
-	const cause = new Cause(required, expected);
+	const throwCause = Cause.Thrower(required, expected);
 
 	return {
 		[name]: (_value, _empty = false) => {
-			cause.clear();
-
 			if (required && _empty) {
-				cause.throw();
+				throwCause();
 			}
 
 			const value = _empty ? Default() : _value;
 
 			if (!validate(value)) {
-				cause.throw();
+				throwCause(value);
 			}
 
-			modify(value);
+			try {
+				modify(value);
+			} catch (error) {
+				throwCause(value, error);
+			}
 
 			return value;
 		}

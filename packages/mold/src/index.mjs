@@ -10,5 +10,7 @@ export { Preset, Preset as Pre, Preset as P };
 import * as Control from './Control/index.mjs';
 export { Control, Control as Ctrl, Control as C };
 
-export { Normalizer, SimpleCauseMessage } from './Normalizer.mjs';
+export * as Message from './Message/index.mjs';
+export { Normalizer } from './Normalizer.mjs';
 export { Circular } from './Circular.mjs';
+export { Through } from './Through.mjs';

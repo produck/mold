@@ -1,12 +1,4 @@
-import * as Native from './Native.mjs';
-
 const isInstance = (any, constructor) => any instanceof constructor;
-
-const isNull = any => any === null;
-
-const isPlainObjectLike = any => {
-	return Native.Object(any) && !isNull(any) && !isArray(any);
-};
 
 const isRegExp = any => isInstance(any, RegExp);
 const isDate = any => isInstance(any, Date);
@@ -19,8 +11,6 @@ const isWeakSet = any => isInstance(any, WeakSet);
 const isPromise = any => isInstance(any, Promise);
 
 export {
-	isNull as Null,
-	isPlainObjectLike as PlainLike,
 	isRegExp as RegExp,
 	isDate as Date,
 	isArray as Array,

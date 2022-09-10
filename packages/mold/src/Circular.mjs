@@ -1,16 +1,15 @@
-import { Error } from './utils/index.mjs';
-import * as Type from './Type/index.mjs';
+import * as Native from './Native/index.mjs';
 
 export const Circular = (SchemaProxy) => {
-	if (!Type.Native.Function(SchemaProxy)) {
-		Error.ThrowMoldError('SchemaProxy', 'function');
+	if (!Native.Base.Type.Function(SchemaProxy)) {
+		Native.Base.throwError('SchemaProxy', 'function');
 	}
 
 	const reference = (...args) => schema(...args);
 	const schema = SchemaProxy(reference);
 
-	if (!Type.Native.Function(schema)) {
-		Error.ThrowMoldError('referenced schema', 'function');
+	if (!Native.Base.Type.Function(schema)) {
+		Native.Base.throwError('referenced schema', 'function');
 	}
 
 	return schema;

@@ -1,4 +1,4 @@
-import * as Type from './Type/index.mjs';
+import * as Type from '../Type/index.mjs';
 
 export const SimpleCauseMessage = cause => {
 	const pathSectionList = [];

@@ -1,24 +1,23 @@
-import * as Native from '../Native/index.mjs';
-
-const assertSchemaFunction = (any, index) => {
-	if (!Native.Base.Type.Function(any)) {
-		Native.Base.throwError(`orSchemaList[${index}]`, 'function as schema');
-	}
-};
+import * as Type from '../Type/index.mjs';
+import * as Utils from '../Utils/index.mjs';
 
 export const And = (andSchemaList = []) => {
-	if (!Array.isArray(andSchemaList)) {
-		Native.Base.throwError('andSchemaList', 'array');
+	if (!Type.Helper.Array(andSchemaList)) {
+		Utils.throwError('andSchemaList', 'array');
 	}
 
-	andSchemaList.forEach(assertSchemaFunction);
+	andSchemaList.forEach((any, index) => {
+		if (!Type.Native.Function(any)) {
+			Utils.throwError(`orSchemaList[${index}]`, 'function as schema');
+		}
+	});
 
 	return (_value, _empty) => {
 		return andSchemaList.reduce((value, schema, index) => {
 			try {
 				return schema(value, _empty);
 			} catch (error) {
-				new Native.Base.MoldCause(_value)
+				new Utils.MoldCause(_value)
 					.setType('CompoundAnd')
 					.append({ causeIndex: index })
 					.throw(error);

@@ -1,15 +1,21 @@
-import * as Base from './Base/index.mjs';
-import * as Utils from './Utils/index.mjs';
+import * as Type from '../Type/index.mjs';
+import * as Utils from '../Utils/index.mjs';
+import { SimplexSchema } from './Schema.mjs';
+import { OptionsParser } from './OptionsParser.mjs';
 
-const parseOptions = Utils.OptionsParser('array as tuple', () => []);
+const parseOptions = OptionsParser('array as tuple', () => []);
 
 export const TupleSchema = (schemaList = [], ...schemaOptions) => {
+	if (!Type.Helper.Array(schemaList)) {
+		Utils.throwError('descriptor', 'object');
+	}
+
 	const finalOptions = parseOptions(schemaOptions);
 
-	return Base.Schema((_tuple, _empty, cause) => {
+	return SimplexSchema((_tuple, _empty, cause) => {
 		_tuple = _empty ? finalOptions.DefaultValue() : _tuple;
 
-		if (!Utils.Type.Array(_tuple)) {
+		if (!Type.Helper.Array(_tuple)) {
 			cause.setType('Value').throw();
 		}
 

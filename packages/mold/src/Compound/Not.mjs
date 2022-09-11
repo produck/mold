@@ -1,8 +1,9 @@
-import * as Native from '../Native/index.mjs';
+import * as Type from '../Type/index.mjs';
+import * as Utils from '../Utils/index.mjs';
 
 export const Not = (targetSchema) => {
-	if (!Native.Base.Type.Function(targetSchema)) {
-		Native.Base.throwError('targetSchema', 'function as schema');
+	if (!Type.Native.Function(targetSchema)) {
+		Utils.throwError('targetSchema', 'function as schema');
 	}
 
 	return (_value, _empty) => {
@@ -12,8 +13,6 @@ export const Not = (targetSchema) => {
 			return _value;
 		}
 
-		new Native.Base.MoldCause(_value)
-			.setType('CompoundNot')
-			.throw();
+		new Utils.MoldCause(_value).setType('CompoundNot').throw();
 	};
 };

@@ -1,10 +1,10 @@
-import * as Base from '../Base/index.mjs';
+import * as Native from './Native.mjs';
 
 const isNull = any => any === null;
 const isArray = any => Array.isArray(any);
 
 const isPlainObjectLike = any => {
-	return Base.Type.Object(any) && !isNull(any) && !isArray(any);
+	return Native.Object(any) && !isNull(any) && !isArray(any);
 };
 
 export {

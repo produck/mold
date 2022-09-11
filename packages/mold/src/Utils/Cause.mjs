@@ -1,6 +1,6 @@
 export class MoldCause {
 	constructor(value) {
-		this.type = 'Base';
+		this.type = 'Abstract';
 		this.detail = {};
 
 		this.value = value;

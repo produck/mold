@@ -10,14 +10,14 @@ export const ArraySchema = (options, ...schemaOptions) => {
 		_array = _empty ? finalOptions.DefaultValue() : _array;
 
 		if (!Utils.Type.Array(_array)) {
-			cause.throw();
+			cause.setType('Value').throw();
 		}
 
 		return _array.map((_item, index) => {
 			try {
 				return options.items(_item);
 			} catch (error) {
-				cause.write('Array', index).throw(error);
+				cause.setType('ArrayItem').append({ index }).throw(error);
 			}
 		});
 	}, ...finalOptions.toSchemaArgs());

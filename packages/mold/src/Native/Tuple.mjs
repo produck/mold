@@ -10,7 +10,7 @@ export const TupleSchema = (schemaList = [], ...schemaOptions) => {
 		_tuple = _empty ? finalOptions.DefaultValue() : _tuple;
 
 		if (!Utils.Type.Array(_tuple)) {
-			cause.throw();
+			cause.setType('Value').throw();
 		}
 
 		const _length = _tuple.length;
@@ -19,7 +19,7 @@ export const TupleSchema = (schemaList = [], ...schemaOptions) => {
 			try {
 				return schema(_tuple[index], index >= _length);
 			} catch (error) {
-				cause.write('Tuple', index).throw(error);
+				cause.setType('TupleElement').append({ index }).throw(error);
 			}
 		});
 	}, ...finalOptions.toSchemaArgs());

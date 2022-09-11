@@ -5,7 +5,7 @@ export const Circular = (SchemaProxy) => {
 		Native.Base.throwError('SchemaProxy', 'function');
 	}
 
-	const reference = (...args) => schema(...args);
+	const reference = (_value, _empty) => schema(_value, _empty);
 	const schema = SchemaProxy(reference);
 
 	if (!Native.Base.Type.Function(schema)) {

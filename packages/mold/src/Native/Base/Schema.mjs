@@ -23,7 +23,7 @@ export const Schema = (normalize, expected, required = false) => {
 			throwError('_empty', 'boolean');
 		}
 
-		const cause = new MoldCause(required, expected, _value);
+		const cause = new MoldCause(_value).append({ required, expected });
 
 		if (required && !_empty) {
 			cause.throw();

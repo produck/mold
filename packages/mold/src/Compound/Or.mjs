@@ -1,15 +1,14 @@
-import { Error, Cause } from '../utils/index.mjs';
-import * as Type from '../Type/index.mjs';
+import * as Native from '../Native/index.mjs';
 
 const assertSchemaFunction = (any, index) => {
-	if (!Type.Native.Function(any)) {
-		Error.ThrowMoldError(`orSchemaList[${index}]`, 'function as schema');
+	if (!Native.Base.Type.Function(any)) {
+		Native.Base.throwError(`orSchemaList[${index}]`, 'function as schema');
 	}
 };
 
 export const Or = (orSchemaList = []) => {
-	if (!Type.Object.Array(orSchemaList)) {
-		Error.ThrowMoldError('orSchemaList', 'array');
+	if (!Array.isArray(orSchemaList)) {
+		Native.Base.throwError('orSchemaList', 'array');
 	}
 
 	orSchemaList.forEach(assertSchemaFunction);
@@ -25,8 +24,9 @@ export const Or = (orSchemaList = []) => {
 			}
 		}
 
-		new Cause.MoldCauseError(null, 'one of')
-			.occur(_value, { type: 'Control', data: { control: 'or', causeList } })
+		new Native.Base.MoldCause(_value)
+			.setType('CompoundOr')
+			.append({ causeList })
 			.throw();
 	};
 };

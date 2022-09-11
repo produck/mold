@@ -12,3 +12,7 @@ export const Function = (defaultValue = null) => {
 		Default: defaultValue === null ? null : () => defaultValue,
 	});
 };
+
+export const Enum = null;
+export const Constant = null;
+export const OrNull = null;

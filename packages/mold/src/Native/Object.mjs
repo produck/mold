@@ -13,6 +13,10 @@ export const ObjectSchema = (schemaMap, ...schemaOptions) => {
 	return Base.Schema((_object, _empty, cause) => {
 		_object = _empty ? finalOptions.DefaultValue() : _object;
 
+		if (!Utils.Type.PlainObjectLike(_object)) {
+			cause.setType('Value').throw();
+		}
+
 		const object = {};
 
 		for (const key in schemaMap) {
@@ -22,7 +26,7 @@ export const ObjectSchema = (schemaMap, ...schemaOptions) => {
 			try {
 				object[key] = schema(_object, !has);
 			} catch (error) {
-				cause.write('Object', key).throw(error);
+				cause.setType('ObjectProperty').append({ key }).throw(error);
 			}
 		}
 

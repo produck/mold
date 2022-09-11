@@ -1,18 +1,20 @@
 export class MoldCause {
-	constructor(required, expected, value) {
+	constructor(value) {
 		this.type = 'Base';
-		this.detail = null;
+		this.detail = {};
 
-		this.required = required;
-		this.expected = expected;
 		this.value = value;
-
 		this.next = null;
 	}
 
-	write(type, detail = null) {
-		this.type = type;
-		this.detail = detail;
+	setType(value) {
+		this.type = value;
+
+		return this;
+	}
+
+	append(detail) {
+		Object.assign(this.detail, detail);
 
 		return this;
 	}
@@ -20,6 +22,6 @@ export class MoldCause {
 	throw(next = null) {
 		this.next = next;
 
-		throw this;
+		throw Object.freeze(this);
 	}
 }

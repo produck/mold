@@ -1,20 +1,19 @@
-import { Error, Cause } from '../utils/index.mjs';
-import * as Type from '../Type/index.mjs';
+import * as Native from '../Native/index.mjs';
 
 export const Not = (targetSchema) => {
-	if (!Type.Native.Function(targetSchema)) {
-		Error.ThrowMoldError('targetSchema', 'function as schema');
+	if (!Native.Base.Type.Function(targetSchema)) {
+		Native.Base.throwError('targetSchema', 'function as schema');
 	}
 
 	return (_value, _empty) => {
 		try {
 			targetSchema(_value, _empty);
-
-			new Cause.MoldCauseError(null, '')
-				.occur(_value, { type: 'Control', data: { control: 'not' } });
-
 		} catch (cause) {
 			return _value;
 		}
+
+		new Native.Base.MoldCause(_value)
+			.setType('CompoundNot')
+			.throw();
 	};
 };

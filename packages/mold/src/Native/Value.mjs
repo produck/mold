@@ -14,7 +14,7 @@ export const ValueSchema = (validate, ...schemaOptions) => {
 		const value = _empty ? finalOptions.DefaultValue() : _value;
 
 		if (!validate(value)) {
-			cause.write('Value').throw();
+			cause.setType('Value').throw();
 		}
 
 		return value;

@@ -15,7 +15,7 @@ export const And = (andSchemaList = []) => {
 	return (_value, _empty) => {
 		return andSchemaList.reduce((value, schema, index) => {
 			try {
-				return schema(value, _empty);
+				return schema(value, _empty && Type.Native.Undefined(value));
 			} catch (error) {
 				new Utils.MoldCause(_value)
 					.setType('CompoundAnd')

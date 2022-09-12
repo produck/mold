@@ -2,26 +2,20 @@ import * as Type from './Type/index.mjs';
 import * as Utils from './Utils/index.mjs';
 import * as CauseMessage from './Message/index.mjs';
 
-export const Normalizer = (schema, Message = CauseMessage.Simple) => {
+export const Normalizer = (schema, caught = CauseMessage.Simple) => {
 	if (!Type.Native.Function(schema)) {
 		Utils.throwError('schema', 'function as schema');
 	}
 
-	if (!Type.Native.Function(Message)) {
-		Utils.throwError('Message', 'function');
+	if (!Type.Native.Function(caught)) {
+		Utils.throwError('caught', 'function');
 	}
 
-	return (_value) => {
+	return (...args) => {
 		try {
-			return schema(_value);
+			return schema(args[0], args.length === 0);
 		} catch (cause) {
-			const message = Message(cause);
-
-			if (!Type.Native.String(message)) {
-				Utils.throwError('message by Message()', 'string');
-			}
-
-			throw new TypeError(message);
+			caught(cause);
 		}
 	};
 };

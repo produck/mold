@@ -11,7 +11,7 @@ export const ObjectSchema = (schemaMap, ...schemaOptions) => {
 	}
 
 	for (const key in schemaMap) {
-		if (!Type.Native.Function(key)) {
+		if (!Type.Native.Function(schemaMap[key])) {
 			Utils.throwError(`schemaMap["${key}"]`, 'function');
 		}
 	}
@@ -25,14 +25,14 @@ export const ObjectSchema = (schemaMap, ...schemaOptions) => {
 			cause.setType('Value').throw();
 		}
 
-		const object = {};
+		const object = { ..._object };
 
 		for (const key in schemaMap) {
 			const schema = schemaMap[key];
 			const has = key in _object;
 
 			try {
-				object[key] = schema(_object, !has);
+				object[key] = schema(_object[key], !has);
 			} catch (error) {
 				cause.setType('ObjectProperty').append({ key }).throw(error);
 			}

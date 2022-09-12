@@ -21,7 +21,7 @@ export const SimplexSchema = (normalize, expected, required = false) => {
 
 		const cause = new Utils.MoldCause(_value).append({ required, expected });
 
-		if (required && !_empty) {
+		if (required && _empty) {
 			cause.setType('SimplexRequired').throw();
 		}
 

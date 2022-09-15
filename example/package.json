@@ -1,0 +1,20 @@
+{
+	"name": "mold-example",
+	"version": "1.0.0",
+	"description": "> TODO: description",
+	"author": "ChaosLee <chaos2lee@qq.com>",
+	"homepage": "https://github.com/produck/mold/tree/main/packages/mold-example#readme",
+	"license": "MIT",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/produck/mold.git"
+	},
+	"scripts": {},
+	"bugs": {
+		"url": "https://github.com/produck/mold/issues"
+	},
+	"dependencies": {
+		"@produck/mold": "^0.0.0"
+	}
+}

@@ -11,11 +11,12 @@
 	"homepage": "https://github.com/produck/mold/tree/main/packages/mold#readme",
 	"license": "MIT",
 	"type": "module",
-	"types": "index.d.js",
+	"types": "types/index.d.js",
 	"files": [
-		"dist",
+		"dist/mold.cjs",
 		"src",
-		"index.d.ts"
+		"types",
+		"tsconfig.json"
 	],
 	"exports": {
 		"import": "./src/index.mjs",
@@ -27,6 +28,8 @@
 		"url": "git+https://github.com/produck/mold.git"
 	},
 	"scripts": {
+		"build": "rollup -c script/rollup.config.mjs",
+		"prepublishOnly": "npm run build",
 		"test": "mocha"
 	},
 	"bugs": {

@@ -5,13 +5,9 @@ import { OptionsParser } from './OptionsParser.mjs';
 
 const parseOptions = OptionsParser('array', () => []);
 
-export const ArraySchema = (descriptor, ...schemaOptions) => {
-	if (!Type.Helper.PlainObjectLike(descriptor)) {
-		Utils.throwError('descriptor', 'object');
-	}
-
-	if (!Type.Native.Function(descriptor.items)) {
-		Utils.throwError('descriptor.items', 'function');
+export const ArraySchema = (itemSchema, ...schemaOptions) => {
+	if (!Type.Native.Function(itemSchema)) {
+		Utils.throwError('itemSchema', 'function');
 	}
 
 	const finalOptions = parseOptions(schemaOptions);
@@ -25,7 +21,7 @@ export const ArraySchema = (descriptor, ...schemaOptions) => {
 
 		return _array.map((_item, index) => {
 			try {
-				return descriptor.items(_item);
+				return itemSchema(_item);
 			} catch (error) {
 				cause.setType('ArrayItem').append({ index }).throw(error);
 			}

@@ -32,7 +32,11 @@ export const ObjectSchema = (schemaMap, ...schemaOptions) => {
 			const has = key in _object;
 
 			try {
-				object[key] = schema(_object[key], !has);
+				const value = schema(_object[key], !has);
+
+				if (!Type.Native.Undefined(value)) {
+					object[key] = value;
+				}
 			} catch (error) {
 				cause.setType('ObjectProperty').append({ key }).throw(error);
 			}

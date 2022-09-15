@@ -1,8 +1,10 @@
 import * as Simplex from '../Simplex/index.mjs';
 import * as Compound from '../Compound/index.mjs';
+import * as Type from '../Type/index.mjs';
+import * as Utils from '../Utils/index.mjs';
 
-export const Constant = (value, expected = JSON.stringify(value)) => {
-	return Simplex.Value(any => any === value, `a constant(${expected})`);
+export const Constant = (value) => {
+	return Simplex.Value(any => any === value, `a constant(${value})`);
 };
 
 export const Enum = (valueList = []) => {
@@ -15,7 +17,27 @@ export const Null = Constant(null);
 export const NotNull = Compound.Not(Null);
 export const OrNull = (schema) => Compound.Or([Null, schema]);
 
-export * as Integer from './Integer.mjs';
-export * as Number from './Number.mjs';
-export * as String from './String.mjs';
-export * as Time from './Time.mjs';
+const TypeSchemaProvider = (validate, expected) => {
+	return (defaultValue) => {
+		const finalArgs = [validate, expected];
+
+		if (!Type.Native.Undefined(defaultValue)) {
+			if (!validate(defaultValue)) {
+				Utils.throwError('defaultValue', expected);
+			}
+
+			finalArgs.push(() => defaultValue);
+		}
+
+		return Simplex.Value(...finalArgs);
+	};
+};
+
+export const Number = TypeSchemaProvider(Type.Native.Number, 'number');
+export const String = TypeSchemaProvider(Type.Native.String, 'string');
+export const Boolean = TypeSchemaProvider(Type.Native.Boolean, 'boolean');
+export const Function = TypeSchemaProvider(Type.Native.Function, 'function');
+export const Symbol = TypeSchemaProvider(Type.Native.Symbol, 'symbol');
+export const Integer = TypeSchemaProvider(Type.Number.Integer, 'integer');
+
+export * as Format from './Format/index.mjs';

@@ -1,7 +1,7 @@
 import * as Type from './Type/index.mjs';
 import * as Utils from './Utils/index.mjs';
 
-const DEFAULT_PROXY = next => next();
+const DEFAULT_PROXY = (_v, _e, next) => next();
 
 export const Custom = (schema, proxy = DEFAULT_PROXY) => {
 	if (!Type.Native.Function(schema)) {

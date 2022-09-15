@@ -18,6 +18,9 @@
 		"types",
 		"tsconfig.json"
 	],
+	"publishConfig": {
+		"access": "public"
+	},
 	"exports": {
 		"import": "./src/index.mjs",
 		"require": "./dist/mold.cjs"

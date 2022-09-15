@@ -6,6 +6,7 @@
 	"homepage": "https://github.com/produck/mold/tree/main/packages/mold-example#readme",
 	"license": "MIT",
 	"main": "index.js",
+	"private": true,
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/produck/mold.git"

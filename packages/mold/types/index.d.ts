@@ -13,28 +13,48 @@ import * as Preset from './Preset';
 export { Preset, Preset as Pre, Preset as P };
 
 import * as Message from './Message';
-export { Message };
+export { Message, Message as Msg, Message as M };
 
-type CircularProxy = (reference: Schema) => void;
+type CircularProxy<
+	CustomSchema extends Schema
+> = (
+	self?: CustomSchema
+) => CustomSchema
 
 interface CircularSchema {
-	(proxy: CircularProxy): Schema;
+	<
+		CustomCircularProxy extends CircularProxy<Schema>
+	>(
+		proxy: CustomCircularProxy
+	): ReturnType<CustomCircularProxy>;
 }
-
-type CustomProxy = (_value: any, _empty: boolean, next: () => any) => any;
 
 interface CustomSchema {
-	(schema: Schema, proxy?: CustomProxy): Schema;
+	<CustomSchema extends Schema>(
+		schema: CustomSchema,
+		proxy?: (
+			_value: ReturnType<CustomSchema>,
+			_empty: boolean,
+			next: () => ReturnType<CustomSchema>
+		) => any
+	): CustomSchema;
 }
 
-interface normalize {
-	(_value: any): any;
+interface Normalize<Type> {
+	(_value: Type): Type;
 }
 
 interface Normalizer {
-	(schema: Schema, caught?: Function): normalize;
+	<CustomSchema extends Schema>(
+		schema: CustomSchema,
+		caught?: Function
+	): Normalize<ReturnType<CustomSchema>>;
 }
 
 export const Circular: CircularSchema;
+export const Circ: CircularSchema;
+
 export const Custom: CustomSchema;
+export const Cust: CustomSchema;
+
 export const Normalizer: Normalizer;

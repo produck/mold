@@ -6,12 +6,23 @@ interface NotSchema {
 
 type SchemaList = Array<Schema>;
 
+type MixinedObject<
+	CustomSchemaList extends SchemaList
+> = ReturnType<CustomSchemaList[0]>
+	| ReturnType<CustomSchemaList[1]>
+	| ReturnType<CustomSchemaList[2]>
+	| ReturnType<CustomSchemaList[3]>
+
 interface AndSchema {
-	(andSchemaList: SchemaList): Schema;
+	<CustomSchemaList extends SchemaList>(
+		andSchemaList: CustomSchemaList
+	): Schema<MixinedObject<CustomSchemaList>>;
 }
 
 interface OrSchema {
-	(orSchemaList: SchemaList): Schema;
+	<CustomSchemaList extends SchemaList>(
+		orSchemaList: CustomSchemaList
+	): Schema<MixinedObject<CustomSchemaList>>;
 }
 
 interface IfOptions {
@@ -20,7 +31,10 @@ interface IfOptions {
 }
 
 interface IfSchema {
-	(test: Schema, options: IfOptions): Schema;
+	<O extends IfOptions>(
+		test: Schema,
+		options: O
+	): Schema<ReturnType<O["then"]> | ReturnType<O["else"]>>;
 }
 
 export const Not: NotSchema;

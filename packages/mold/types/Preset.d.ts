@@ -1,10 +1,14 @@
 import { Schema } from './schema';
 
-export const Constant: (value: any) => Schema;
+export const Constant: <Type>(value: Type) => Schema<Type>;
 export const Enum: (valueList: Array<any>) => Schema;
+
 export const Null: Schema<null>;
-export const NotNull: Schema<any>;
-export const OrNull: (schema: Schema) => Schema;
+export const NotNull: Schema<NonNullable<any>>;
+
+export const OrNull: <
+	CustomSchema extends Schema = Schema
+>(schema: CustomSchema) => CustomSchema | Schema<null>;
 
 export const Number: (defaultValue?: number) => Schema<number>;
 export const String: (defaultValue?: string) => Schema<string>;

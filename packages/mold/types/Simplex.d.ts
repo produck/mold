@@ -3,34 +3,53 @@ import { Schema } from './schema';
 type DefaultValue = () => any | null;
 
 interface ArraySchema {
-	(itemSchema: Schema): Schema;
-	(itemSchema: Schema, expected: string): Schema;
-	(itemSchema: Schema, DefaultValue: DefaultValue): Schema;
-	(itemSchema: Schema, expected: string, DefaultValue: DefaultValue): Schema;
-}
-
-type SchemaList = Array<Schema>;
-
-interface TupleSchema {
-	(schemaList: SchemaList): Schema;
-	(schemaList: SchemaList, expected: string): Schema;
-	(schemaList: SchemaList, DefaultValue: DefaultValue): Schema;
-	(schemaList: SchemaList, expected: string, DefaultValue: DefaultValue): Schema;
-}
-
-type Validate = (any: any) => boolean;
-
-interface ValueSchema {
-	(
-		validate: Validate,
+	<CustomSchema extends Schema = Schema<any>>(
+		itemSchema: CustomSchema,
 		expected?: string,
 		DefaultValue?: DefaultValue
-	): Schema;
+	): Schema<Array<ReturnType<CustomSchema>>>;
 
-	(
-		validate: Validate,
+	<CustomSchema extends Schema = Schema<any>>(
+		itemSchema: CustomSchema,
+		DefaultValue: DefaultValue
+	): Schema<Array<ReturnType<CustomSchema>>>;
+}
+
+
+type SchemaTuple = Array<Schema>;
+
+type CombinedTuple<
+	CustomSchemaTuple extends SchemaTuple
+> = {
+	[Index in keyof CustomSchemaTuple]: ReturnType<CustomSchemaTuple[Index]>
+};
+
+interface TupleSchema {
+	<CustomSchemaTuple extends SchemaTuple>(
+		schemaList: CustomSchemaTuple,
+		expected?: string,
 		DefaultValue?: DefaultValue
-	): Schema;
+	): Schema<CombinedTuple<CustomSchemaTuple>>;
+
+	<CustomSchemaTuple extends SchemaTuple>(
+		schemaList: CustomSchemaTuple,
+		DefaultValue: DefaultValue
+	): Schema<CombinedTuple<CustomSchemaTuple>>;
+}
+
+type Validate<Type = any> = (any: Type) => boolean;
+
+interface ValueSchema {
+	<CustomValidate extends Validate>(
+		validate: CustomValidate,
+		expected?: string,
+		DefaultValue?: DefaultValue
+	): CustomValidate extends Validate<infer V> ? Schema<V> : never;
+
+	<CustomValidate extends Validate>(
+		validate: CustomValidate,
+		DefaultValue: DefaultValue
+	): CustomValidate extends Validate<infer V> ? Schema<V>: never;
 }
 
 interface SchemaMap {
@@ -44,7 +63,7 @@ type CombinedObject<
 }
 
 interface ObjectSchema {
-	<CustomSchemaMap extends SchemaMap>(
+	<CustomSchemaMap extends SchemaMap = {}>(
 		schemaMap: CustomSchemaMap,
 		expected?: string,
 		DefaultValue?: DefaultValue
@@ -52,7 +71,7 @@ interface ObjectSchema {
 
 	<CustomSchemaMap extends SchemaMap>(
 		schemaMap: CustomSchemaMap,
-		DefaultValue?: DefaultValue
+		DefaultValue: DefaultValue
 	): Schema<CombinedObject<CustomSchemaMap>>;
 }
 

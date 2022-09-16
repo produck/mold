@@ -21,21 +21,39 @@ interface TupleSchema {
 type Validate = (any: any) => boolean;
 
 interface ValueSchema {
-	(validate: Validate): Schema;
-	(validate: Validate, expected: string): Schema;
-	(validate: Validate, DefaultValue: DefaultValue): Schema;
-	(validate: Validate, expected: string, DefaultValue: DefaultValue): Schema;
+	(
+		validate: Validate,
+		expected?: string,
+		DefaultValue?: DefaultValue
+	): Schema;
+
+	(
+		validate: Validate,
+		DefaultValue?: DefaultValue
+	): Schema;
 }
 
 interface SchemaMap {
 	[key: string]: Schema;
 }
 
+type CombinedObject<
+	CustomSchemaMap extends SchemaMap
+> = {
+	[Property in keyof CustomSchemaMap]: ReturnType<CustomSchemaMap[Property]>
+}
+
 interface ObjectSchema {
-	(schemaMap: SchemaMap): Schema;
-	(schemaMap: SchemaMap, expected: string): Schema;
-	(schemaMap: SchemaMap, DefaultValue: DefaultValue): Schema;
-	(schemaMap: SchemaMap, expected: string, DefaultValue: DefaultValue): Schema;
+	<CustomSchemaMap extends SchemaMap>(
+		schemaMap: CustomSchemaMap,
+		expected?: string,
+		DefaultValue?: DefaultValue
+	): Schema<CombinedObject<CustomSchemaMap>>;
+
+	<CustomSchemaMap extends SchemaMap>(
+		schemaMap: CustomSchemaMap,
+		DefaultValue?: DefaultValue
+	): Schema<CombinedObject<CustomSchemaMap>>;
 }
 
 export const Value: ValueSchema;

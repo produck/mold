@@ -1,3 +1,3 @@
-export interface Schema {
-	(_value: any, _empty: boolean): any;
+export interface Schema<ValueType = any> {
+	(_value: any, _empty: boolean): ValueType;
 }

@@ -18,7 +18,7 @@ export { Message, Message as Msg, Message as M };
 type CircularProxy<
 	CustomSchema extends Schema
 > = (
-	self?: CustomSchema
+	self: CustomSchema
 ) => CustomSchema
 
 interface CircularSchema {

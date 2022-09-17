@@ -1,61 +1,53 @@
-import { S, C, P, Circular, Custom, Normalizer, Message } from '@produck/mold';
+import { S, C, P, Normalizer, Circular, Custom, T } from '@produck/mold';
 
-const IdValue = C.Or([P.Number(), P.String('bar')]);
-const OptionalPoint = S.Tuple([P.Integer(0), P.Integer(0)]);
-
-const EmploymentAge = C.And([
-	P.Integer(0),
-	S.Value(any => any > 0 && any <= 60, 'number(0,60]')
-]);
-
-const schema = C.And([
-	S.Object({
-		type: P.Constant('Person'),
-		id: C.Or([IdValue, S.Array(IdValue)]),
-		name: P.String('foo'),
-		tag: P.OrNull(P.Constant('default')),
-		origin: Custom(OptionalPoint, (_value, _empty, next) => {
-			try {
-				console.log(_value, _empty);
-
-				return next();
-			} catch (error) {
-				console.log(error);
-
-				throw error;
-			}
-		}),
-		age: P.Integer(0),
-		routes: Circular(RouteNode => S.Object({
-			name: P.String('foo'),
-			children: S.Array(RouteNode)
-		}))
+const Object = S.Object({
+	c: P.Constant(1),
+	a: S.Object({
+		b: P.Type.String('foo'),
+		c: P.Type.Boolean()
 	}),
-	C.If(S.Object({ age: EmploymentAge }), {
-		then: S.Object({ working: P.Boolean(true) }),
-		else: S.Object({ working: P.Boolean(false) })
+	l: S.Array(S.Object({
+		s: P.Type.String('')
+	})),
+	d: S.Object(),
+	e: P.OrNull(P.Symbol()),
+	route: Circular(self => S.Object({
+		name: P.Type.String(),
+		next: self,
+		previous: self
+	})),
+	C: Custom(S.Object({
+		a: P.Null
+	}), (_value, _empty, next) => {
+		const value = next();
+
+	}),
+	D: P.Instance(Date),
+	point: S.Tuple([P.Type.Number(0), P.Type.Number(0), P.Type.String()])
+});
+
+const And = C.Or([
+	S.Object({
+		a: P.Type.Number()
+	}),
+	S.Object({
+		b: P.Type.Boolean()
 	})
 ]);
 
-const normalize = Normalizer(schema, Message.Origin);
+const obj = And();
 
-try {
-	const finalOptions = normalize({
-		type: 'Person',
-		id: ['789', 678],
-		age: 70,
-		tag: 'default',
-		routes: {
-			name: 'bar',
-			children: [
-				{
-				},
-			]
-		},
-		working: true
-	});
+const normalize = Normalizer(Object, () => {});
 
-	console.log(finalOptions);
-} catch (error) {
-	console.log(error);
-}
+const finalOptions = normalize({
+	c: 1,
+	route: {
+		name: 'a',
+
+	},
+	D: new Date(),
+	point: [0, 0]
+});
+
+finalOptions.point
+

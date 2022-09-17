@@ -15,8 +15,17 @@ interface ArraySchema {
 	): Schema<Array<ReturnType<CustomSchema>>>;
 }
 
-
-type SchemaTuple = Array<Schema>;
+type SchemaTuple =
+	| []
+	| [Schema]
+	| [Schema, Schema]
+	| [Schema, Schema, Schema]
+	| [Schema, Schema, Schema, Schema]
+	| [Schema, Schema, Schema, Schema, Schema]
+	| [Schema, Schema, Schema, Schema, Schema, Schema]
+	| [Schema, Schema, Schema, Schema, Schema, Schema, Schema]
+	| [Schema, Schema, Schema, Schema, Schema, Schema, Schema, Schema]
+	| [Schema, Schema, Schema, Schema, Schema, Schema, Schema, Schema, Schema];
 
 type CombinedTuple<
 	CustomSchemaTuple extends SchemaTuple

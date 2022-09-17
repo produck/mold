@@ -8,11 +8,24 @@ export const NotNull: Schema<NonNullable<any>>;
 
 export const OrNull: <
 	CustomSchema extends Schema = Schema
->(schema: CustomSchema) => CustomSchema | Schema<null>;
+>(
+	schema: CustomSchema
+) => CustomSchema | Schema<null>;
 
-export const Number: (defaultValue?: number) => Schema<number>;
-export const String: (defaultValue?: string) => Schema<string>;
-export const Boolean: (defaultValue?: boolean) => Schema<boolean>;
-export const Function: (defaultValue?: Function) => Schema<Function>;
-export const Symbol: (defaultValue?: symbol) => Schema<symbol>;
-export const Integer: (defaultValue?: number) => Schema<number>;
+export const Instance: <
+	CustomConstructor extends abstract new (...args) => any
+>(
+	/**
+	 * Anything can be used as a constructor
+	 */
+	Constructor: CustomConstructor
+) => Schema<InstanceType<CustomConstructor>>
+
+export namespace Type {
+	const Number: (defaultValue?: number) => Schema<number>;
+	const String: (defaultValue?: string) => Schema<string>;
+	const Boolean: (defaultValue?: boolean) => Schema<boolean>;
+	const Function: (defaultValue?: Function) => Schema<Function>;
+	const Symbol: (defaultValue?: symbol) => Schema<symbol>;
+	const Integer: (defaultValue?: number) => Schema<number>;
+}

@@ -6,6 +6,7 @@
 	"packages": [
 		"packages/mold",
 		"example/cjs",
-		"example/mjs"
+		"example/mjs",
+		"example/ts"
 	]
 }

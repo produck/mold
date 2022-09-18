@@ -11,10 +11,10 @@ const Object = S.Object({
 	})),
 	d: S.Object({}),
 	e: P.OrNull(P.Symbol()),
-	route: Circular(self => S.Object({
+	route: Circular(schema => S.Object({
 		name: P.String(),
-		next: P.OrNull(self),
-		previous: P.OrNull(self)
+		next: P.OrNull(schema),
+		previous: P.OrNull(schema)
 	})),
 	D: P.Instance(Date),
 	point: S.Tuple([P.Number(0), P.Number(0), P.String('baz')]),

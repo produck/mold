@@ -4,7 +4,7 @@ export { Simplex, Simplex as Simp, Simplex as S };
 import * as Compound from './Compound/index.mjs';
 export { Compound, Compound as Comp, Compound as C };
 
-import * as Preset from './Preset/index.mjs';
+import * as Preset from './Preset.mjs';
 export { Preset, Preset as Pre, Preset as P };
 
 import { Circular } from './Circular.mjs';

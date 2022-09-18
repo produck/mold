@@ -40,15 +40,15 @@ interface CustomSchema {
 	): CustomSchema;
 }
 
-interface Normalize<Type> {
+interface Normalizer<Type> {
 	(_value: Type): Type;
 }
 
-interface Normalizer {
+interface NormalizerConstructor {
 	<CustomSchema extends Schema>(
 		schema: CustomSchema,
 		caught?: Function
-	): Normalize<ReturnType<CustomSchema>>;
+	): Normalizer<ReturnType<CustomSchema>>;
 }
 
 export const Circular: CircularSchema;
@@ -57,4 +57,4 @@ export const Circ: CircularSchema;
 export const Custom: CustomSchema;
 export const Cust: CustomSchema;
 
-export const Normalizer: Normalizer;
+export const Normalizer: NormalizerConstructor;

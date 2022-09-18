@@ -15,17 +15,21 @@ interface ArraySchema {
 	): Schema<Array<ReturnType<CustomSchema>>>;
 }
 
-type SchemaTuple =
-	| []
-	| [Schema]
-	| [Schema, Schema]
-	| [Schema, Schema, Schema]
-	| [Schema, Schema, Schema, Schema]
-	| [Schema, Schema, Schema, Schema, Schema]
-	| [Schema, Schema, Schema, Schema, Schema, Schema]
-	| [Schema, Schema, Schema, Schema, Schema, Schema, Schema]
-	| [Schema, Schema, Schema, Schema, Schema, Schema, Schema, Schema]
-	| [Schema, Schema, Schema, Schema, Schema, Schema, Schema, Schema, Schema];
+type SchemaTuple<S extends Schema = Schema> = []
+| [S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S, S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S, S, S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S, S, S, S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S, S, S, S, S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S, S, S, S, S, S, S, S] | [S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S]
+| [S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S, S];
 
 type CombinedTuple<
 	CustomSchemaTuple extends SchemaTuple
@@ -73,7 +77,7 @@ type CombinedObject<
 
 interface ObjectSchema {
 	<CustomSchemaMap extends SchemaMap = {}>(
-		schemaMap: CustomSchemaMap,
+		schemaMap?: CustomSchemaMap,
 		expected?: string,
 		DefaultValue?: DefaultValue
 	): Schema<CombinedObject<CustomSchemaMap>>;

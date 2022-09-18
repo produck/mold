@@ -5,7 +5,7 @@ import { OptionsParser } from './OptionsParser.mjs';
 
 const parseOptions = OptionsParser('object', () => ({}));
 
-export const ObjectSchema = (schemaMap, ...schemaOptions) => {
+export const ObjectSchema = (schemaMap = {}, ...schemaOptions) => {
 	if (!Type.Helper.PlainObjectLike(schemaMap)) {
 		Utils.throwError('schemaMap', 'object');
 	}

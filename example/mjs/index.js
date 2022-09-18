@@ -1,53 +1,47 @@
-import { S, C, P, Normalizer, Circular, Custom, T } from '@produck/mold';
+import { S, C, P, Normalizer, Circular, Custom, T, Message } from '@produck/mold';
 
 const Object = S.Object({
 	c: P.Constant(1),
 	a: S.Object({
-		b: P.Type.String('foo'),
-		c: P.Type.Boolean()
+		b: P.String('foo'),
+		c: P.Boolean(true)
 	}),
 	l: S.Array(S.Object({
-		s: P.Type.String('')
+		s: P.String('')
 	})),
-	d: S.Object(),
+	d: S.Object({}),
 	e: P.OrNull(P.Symbol()),
 	route: Circular(self => S.Object({
-		name: P.Type.String(),
-		next: self,
-		previous: self
+		name: P.String(),
+		next: P.OrNull(self),
+		previous: P.OrNull(self)
 	})),
-	C: Custom(S.Object({
-		a: P.Null
-	}), (_value, _empty, next) => {
-		const value = next();
-
-	}),
 	D: P.Instance(Date),
-	point: S.Tuple([P.Type.Number(0), P.Type.Number(0), P.Type.String()])
+	point: S.Tuple([P.Number(0), P.Number(0), P.String('baz')]),
+	port: P.Port(80),
+	p: P.StringPattern(/[a-f0-9]+/)('9f'),
+	l: P.StringLength(5)('33333'),
+	m5: P.IntegerMultipleOf(5)(10)
 });
 
-const And = C.Or([
-	S.Object({
-		a: P.Type.Number()
-	}),
-	S.Object({
-		b: P.Type.Boolean()
-	})
-]);
+const normalize = Normalizer(Object, Message.Origin);
 
-const obj = And();
+try {
+	const finalOptions = normalize({
+		c: 1,
+		route: {
+			name: 'a',
+			next: null,
+			previous: null
+		},
+		e: null,
+		D: new Date(),
+		point: [0, 0],
+	});
 
-const normalize = Normalizer(Object, () => {});
+	console.log(finalOptions);
+} catch (error) {
+	console.log(error);
+}
 
-const finalOptions = normalize({
-	c: 1,
-	route: {
-		name: 'a',
-
-	},
-	D: new Date(),
-	point: [0, 0]
-});
-
-finalOptions.point
 

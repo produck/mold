@@ -4,7 +4,7 @@ export const Constant: <Type>(value: Type) => Schema<Type>;
 export const Enum: (valueList: Array<any>) => Schema;
 
 export const Null: Schema<null>;
-export const NotNull: Schema<NonNullable<any>>;
+export const NotNull: Schema<Exclude<any, null>>;
 
 export const OrNull: <
 	CustomSchema extends Schema = Schema
@@ -21,11 +21,40 @@ export const Instance: <
 	Constructor: CustomConstructor
 ) => Schema<InstanceType<CustomConstructor>>
 
-export namespace Type {
-	const Number: (defaultValue?: number) => Schema<number>;
-	const String: (defaultValue?: string) => Schema<string>;
-	const Boolean: (defaultValue?: boolean) => Schema<boolean>;
-	const Function: (defaultValue?: Function) => Schema<Function>;
-	const Symbol: (defaultValue?: symbol) => Schema<symbol>;
-	const Integer: (defaultValue?: number) => Schema<number>;
-}
+type NativeSchema<Type = any> = (
+	/**
+	 * No default value means required.
+	 */
+	defaultValue?: Type
+) => Schema<Type>
+
+type NumberNativeSchema = NativeSchema<number>;
+
+export const Number: NumberNativeSchema;
+
+export const NumberRange: (
+	edge?: [minValue?: number, maxValue?: number],
+	open?: [minOpen?: boolean, maxOpen?: boolean],
+) => NumberNativeSchema;
+
+export const Integer: NumberNativeSchema;
+export const IntegerMultipleOf: (base: number) => NumberNativeSchema;
+
+export const Port: NumberNativeSchema;
+export const INT8: NumberNativeSchema;
+export const UINT8: NumberNativeSchema;
+export const INT16: NumberNativeSchema;
+export const UINT16: NumberNativeSchema;
+export const INT24: NumberNativeSchema;
+export const UINT24: NumberNativeSchema;
+export const INT32: NumberNativeSchema;
+export const UINT32: NumberNativeSchema;
+export const Byte: NumberNativeSchema;
+
+export const String: NativeSchema<string>;
+export const StringPattern: (pattern: RegExp, name?: string) => NativeSchema<string>;
+export const StringLength: (min: number, max?: number) => NativeSchema<string>;
+
+export const Boolean: NativeSchema<boolean>;
+export const Function: NativeSchema<Function>;
+export const Symbol: NativeSchema<symbol>;

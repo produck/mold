@@ -1,6 +1,6 @@
 {
 	"name": "mold-example-cjs",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "> TODO: description",
 	"author": "ChaosLee <chaos2lee@qq.com>",
 	"homepage": "https://github.com/produck/mold/tree/main/packages/mold-example#readme",
@@ -16,6 +16,6 @@
 		"url": "https://github.com/produck/mold/issues"
 	},
 	"dependencies": {
-		"@produck/mold": "^0.0.1"
+		"@produck/mold": "^0.0.2"
 	}
 }

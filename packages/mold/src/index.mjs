@@ -16,7 +16,7 @@ export { Custom, Custom as Cust };
 import * as Type from './Type/index.mjs';
 export { Type, Type as T };
 
-import * as Message from './Message/index.mjs';
-export { Message, Message as Msg, Message as M };
+import * as Catcher from './Catcher/index.mjs';
+export { Catcher };
 
 export { Normalizer } from './Normalizer.mjs';

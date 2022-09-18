@@ -12,8 +12,10 @@ export { Compound, Compound as Comp, Compound as C };
 import * as Preset from './Preset';
 export { Preset, Preset as Pre, Preset as P };
 
-import * as Message from './Message';
-export { Message, Message as Msg, Message as M };
+export namespace Catcher {
+	const Origin: () => {};
+	const Simple: () => {};
+}
 
 type CircularProxy<
 	CustomSchema extends Schema

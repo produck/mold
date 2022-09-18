@@ -1,4 +1,4 @@
-import { S, C, P, Normalizer, Circular, Custom, T, Message } from '@produck/mold';
+import { S, C, P, Normalizer, Circular } from '@produck/mold';
 
 const Object = S.Object({
 	c: P.Constant(1),
@@ -13,8 +13,8 @@ const Object = S.Object({
 	e: P.OrNull(P.Symbol()),
 	route: Circular(schema => S.Object({
 		name: P.String(),
-		next: P.OrNull(schema),
-		previous: P.OrNull(schema)
+		next: schema,
+		previous: schema
 	})),
 	D: P.Instance(Date),
 	point: S.Tuple([P.Number(0), P.Number(0), P.String('baz')]),
@@ -24,24 +24,27 @@ const Object = S.Object({
 	m5: P.IntegerMultipleOf(5)(10)
 });
 
-const normalize = Normalizer(Object, Message.Origin);
+const normalize = Normalizer(Object);
 
 try {
 	const finalOptions = normalize({
 		c: 1,
 		route: {
 			name: 'a',
-			next: null,
+			next: {
+				name: 'b',
+				previous: null,
+				next: {
+				}
+			},
 			previous: null
 		},
 		e: null,
 		D: new Date(),
-		point: [0, 0],
+		point: [0],
 	});
 
 	console.log(finalOptions);
 } catch (error) {
 	console.log(error);
 }
-
-

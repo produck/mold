@@ -24,7 +24,7 @@ export const OptionsParser = (expected = 'valid value', DefaultValue = null) => 
 
 		if (length === 1) {
 			if (!Type.Native.String(_0) && !isDefaultValue(_0)) {
-				Utils.throwError('options[0]', 'string or function');
+				Utils.throwError('options<0>', 'string or function or null');
 			}
 
 			if (Type.Native.String(_0)) {
@@ -38,11 +38,11 @@ export const OptionsParser = (expected = 'valid value', DefaultValue = null) => 
 
 		if (length === 2) {
 			if (!Type.Native.String(_0)) {
-				Utils.throwError('options[0]', 'string');
+				Utils.throwError('options<0>', 'string');
 			}
 
 			if (!isDefaultValue(_1)) {
-				Utils.throwError('options[1]', 'function or null');
+				Utils.throwError('options<1>', 'function or null');
 			}
 
 			options.expected = _0;

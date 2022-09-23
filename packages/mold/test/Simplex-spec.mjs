@@ -146,18 +146,180 @@ describe('Simplex::', function () {
 	});
 
 	describe('ValueSchema::', function () {
+		it('should throw if bad validate.', function () {
+			assert.throws(() => Simplex.Value(), {
+				name: 'TypeError',
+				message: 'Invalid "validate", one "function" expected.'
+			});
+		});
 
+		describe('schema::', function () {
+			it('should create a required schema.', function () {
+				const foo = Simplex.Value(() => true, 'bar');
+				const value = foo('baz', false);
+
+				assert.strictEqual(value, 'baz');
+				assert.throws(() => foo(undefined, true));
+			});
+
+			it('should create a optional schema.', function () {
+				const foo = Simplex.Value(() => true, 'bar', () => 'baz');
+				const value = foo(undefined, true);
+
+				assert.strictEqual(value, 'baz');
+			});
+
+			it('should throw if not validated.', function () {
+				const foo = Simplex.Value(() => false, 'bar', () => 'baz');
+
+				assert.throws(() => foo(null, false));
+			});
+		});
 	});
 
 	describe('ObjectSchema::', function () {
+		it('should create an object schema.', function () {
+			Simplex.Object();
+		});
 
+		it('should throw if bad schemaMap.', function () {
+			assert.throws(() => Simplex.Object(null), {
+				name: 'TypeError',
+				message: 'Invalid "schemaMap", one "plain object" expected.'
+			});
+		});
+
+		it('should throw if bad schema in schemaMap', function () {
+			assert.throws(() => Simplex.Object({ a: null }), {
+				name: 'TypeError',
+				message: 'Invalid "schemaMap["a"]", one "function" expected.'
+			});
+		});
+
+		describe('schema::', function () {
+			it('should throw if bad _value.', function () {
+				const schema = Simplex.Object();
+
+				assert.throws(() => schema());
+			});
+
+			it('should get a default object.', function () {
+				const schema = Simplex.Object();
+
+				assert.deepStrictEqual(schema(undefined, true), {});
+			});
+
+			it('should get an object with default property.', function () {
+				const schema = Simplex.Object({ foo: () => 'bar' });
+
+				assert.deepStrictEqual(schema(undefined, true), { foo: 'bar' });
+			});
+
+			it('should throw if bad property.', function () {
+				const schema = Simplex.Object({
+					foo: () => {
+						throw new Error('bar');
+					}
+				});
+
+				assert.throws(() => schema({}));
+			});
+		});
 	});
 
 	describe('ArraySchema::', function () {
+		it('should throw if bad itemSchema.', function () {
+			assert.throws(() => Simplex.Array(null), {
+				name: 'TypeError',
+				message: 'Invalid "itemSchema", one "function" expected.'
+			});
+		});
 
+		it('should create an array schema.', function () {
+			Simplex.Array();
+			Simplex.Array(() => {});
+		});
+
+		describe('schema::', function () {
+			it('should get a default [].', function () {
+				const schema = Simplex.Array();
+
+				assert.deepStrictEqual(schema(undefined, true), []);
+			});
+
+			it('should throw if bad _value', function () {
+				const schema = Simplex.Array();
+
+				assert.throws(() => schema(null));
+			});
+
+			it('should pass if any item in array.', function () {
+				const schema = Simplex.Array();
+				const value = [1, true];
+
+				assert.deepStrictEqual(schema(value), [1, true]);
+			});
+
+			it('should throw if bad item.', function () {
+				const schema = Simplex.Array(any => {
+					throw new Error('foo');
+				});
+
+				assert.throws(() => schema([1]));
+			});
+		});
 	});
 
 	describe('TupleSchema::', function () {
+		it('should create a default tuple schema.', function () {
+			Simplex.Tuple();
+		});
 
+		it('should throw if bad schemaList.', function () {
+			assert.throws(() => Simplex.Tuple(null), {
+				name: 'TypeError',
+				message: 'Invalid "schemaList", one "array" expected.'
+			});
+		});
+
+		it('should throw if a bad schema in schemaList.', function () {
+			assert.throws(() => Simplex.Tuple([0]), {
+				name: 'TypeError',
+				message: 'Invalid "schemaList[0]", one "function" expected.'
+			});
+		});
+
+		describe('schema::', function () {
+			it('should get a default tuple []', function () {
+				const schema = Simplex.Tuple();
+
+				assert.deepStrictEqual(schema(undefined, true), []);
+			});
+
+			it('should throw if bad _value.', function () {
+				const schema = Simplex.Tuple();
+
+				assert.throws(() => schema());
+			});
+
+			it('should get a tuple with default value.', function () {
+				const schema = Simplex.Tuple([
+					() => 'foo',
+					() => 1
+				]);
+
+				assert.deepStrictEqual(schema([]), ['foo', 1]);
+			});
+
+			it('should throw if bad element in tuple', function () {
+				const schema = Simplex.Tuple([
+					() => {
+						throw new Error('foo');
+					},
+				]);
+
+				assert.throws(() => schema([1]));
+			});
+		});
 	});
 });

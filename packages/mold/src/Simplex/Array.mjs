@@ -4,8 +4,9 @@ import { SimplexSchema } from './Schema.mjs';
 import { OptionsParser } from './OptionsParser.mjs';
 
 const parseOptions = OptionsParser('array', () => []);
+const DEFAULT_ANY = any => any;
 
-export const ArraySchema = (itemSchema, ...schemaOptions) => {
+export const ArraySchema = (itemSchema = DEFAULT_ANY, ...schemaOptions) => {
 	if (!Type.Native.Function(itemSchema)) {
 		Utils.throwError('itemSchema', 'function');
 	}

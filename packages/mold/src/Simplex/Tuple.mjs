@@ -7,7 +7,13 @@ const parseOptions = OptionsParser('array as tuple', () => []);
 
 export const TupleSchema = (schemaList = [], ...schemaOptions) => {
 	if (!Type.Helper.Array(schemaList)) {
-		Utils.throwError('descriptor', 'object');
+		Utils.throwError('schemaList', 'array');
+	}
+
+	for (const index in schemaList) {
+		if (!Type.Native.Function(schemaList[index])) {
+			Utils.throwError(`schemaList[${index}]`, 'function');
+		}
 	}
 
 	const finalOptions = parseOptions(schemaOptions);

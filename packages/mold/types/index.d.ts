@@ -13,8 +13,10 @@ import * as Preset from './Preset';
 export { Preset, Preset as Pre, Preset as P };
 
 export namespace Catcher {
-	const Origin: () => {};
+	const Throw: () => {};
 	const Simple: () => {};
+	const Complete: () => {};
+	const Visual: () => {};
 }
 
 type CircularProxy<

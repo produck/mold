@@ -4,7 +4,7 @@ import * as Catcher from './Catcher/index.mjs';
 
 export const Normalizer = (schema, catcher = Catcher.Simple) => {
 	if (!Type.Native.Function(schema)) {
-		Utils.throwError('schema', 'function as schema');
+		Utils.throwError('schema', 'function');
 	}
 
 	if (!Type.Native.Function(catcher)) {

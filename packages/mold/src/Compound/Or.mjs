@@ -1,21 +1,21 @@
 import * as Type from '../Type/index.mjs';
 import * as Utils from '../Utils/index.mjs';
 
-export const Or = (orSchemaList = []) => {
-	if (!Type.Helper.Array(orSchemaList)) {
-		Utils.throwError('orSchemaList', 'array');
+export const Or = (schemaList = []) => {
+	if (!Type.Helper.Array(schemaList)) {
+		Utils.throwError('schemaList', 'array');
 	}
 
-	orSchemaList.forEach((any, index) => {
+	schemaList.forEach((any, index) => {
 		if (!Type.Native.Function(any)) {
-			Utils.throwError(`orSchemaList[${index}]`, 'function as schema');
+			Utils.throwError(`schemaList[${index}]`, 'function');
 		}
 	});
 
 	return (_value, _empty) => {
 		const causeList = [];
 
-		for (const schema of orSchemaList) {
+		for (const schema of schemaList) {
 			try {
 				return schema(_value, _empty);
 			} catch (cause) {

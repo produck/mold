@@ -3,7 +3,7 @@ import * as Utils from '../Utils/index.mjs';
 
 export const Not = (targetSchema) => {
 	if (!Type.Native.Function(targetSchema)) {
-		Utils.throwError('targetSchema', 'function as schema');
+		Utils.throwError('targetSchema', 'function');
 	}
 
 	return (_value, _empty) => {

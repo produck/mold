@@ -261,7 +261,7 @@ describe('Simplex::', function () {
 			});
 
 			it('should throw if bad item.', function () {
-				const schema = Simplex.Array(any => {
+				const schema = Simplex.Array(() => {
 					throw new Error('foo');
 				});
 

@@ -8,7 +8,7 @@ export const Constant = (value) => {
 };
 
 export const Enum = (valueList = []) => {
-	if (!Type.Object.Array(valueList)) {
+	if (!Type.Helper.Array(valueList)) {
 		Utils.throwError('valueList', 'array');
 	}
 
@@ -59,12 +59,13 @@ export const String = SchemaProvider(Type.Native.String, 'string');
 export const Boolean = SchemaProvider(Type.Native.Boolean, 'boolean');
 export const Function = SchemaProvider(Type.Native.Function, 'function');
 export const Symbol = SchemaProvider(Type.Native.Symbol, 'symbol');
-export const Integer = SchemaProvider(Type.Number.Integer, 'integer');
+export const BigInt = SchemaProvider(Type.Native.BigInt, 'bigint');
+export const Integer = SchemaProvider(Type.Helper.Integer, 'integer');
 
 const parseEdge = (value, role) => {
 	const isNumber = Type.Native.Number(value);
 
-	const isClosedNumber = Type.Object.Array(value) &&
+	const isClosedNumber = Type.Helper.Array(value) &&
 		value.length === 1 && Type.Native.Number(value[0]);
 
 	if (!isNumber && !isClosedNumber) {
@@ -94,11 +95,11 @@ export const NumberRange = (min = -Infinity, max = +Infinity) => {
 };
 
 export const IntegerMultipleOf = (base = 1) => {
-	if (!Type.Number.Integer(base)) {
+	if (!Type.Helper.Integer(base)) {
 		Utils.throwError('base', 'interger');
 	}
 
-	const validate = any => Type.Number.Integer(any) && any % base === 0;
+	const validate = any => Type.Helper.Integer(any) && any % base === 0;
 
 	return SchemaProvider(validate, `integer multiple of ${base}`);
 };
@@ -117,7 +118,7 @@ export const UINT32 = NumberRange([0], [pow2(32) - 1]);
 export const Byte = UINT8;
 
 export const StringPattern = (pattern, name) => {
-	if (!Type.Object.RegExp(pattern)) {
+	if (!Type.Helper.RegExp(pattern)) {
 		Utils.throwError('pattern', 'RegExp');
 	}
 
@@ -135,11 +136,11 @@ export const StringPattern = (pattern, name) => {
 };
 
 export const StringLength = (min = 0, max = min) => {
-	if (!Type.Number.Integer(min) || min < 0) {
+	if (!Type.Helper.Integer(min) || min < 0) {
 		Utils.throwError('min', 'integer >= 0');
 	}
 
-	if (!Type.Number.Integer(max) || max < min) {
+	if (!Type.Helper.Integer(max) || max < min) {
 		Utils.throwError('max', 'integer >= min');
 	}
 

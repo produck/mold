@@ -15,22 +15,7 @@ export namespace Helper {
 	const Null: Validate<null>;
 	const Array: Validate<Array<any>>;
 	const PlainObjectLike: Validate<object>;
-}
-
-export namespace Number {
-	const Integer: Validate<number>;
-	const Infinity: Validate<number>;
-	const NaN: Validate<number>;
-}
-
-export namespace Object {
 	const RegExp: Validate<RegExp>;
-	const Date: Validate<Date>;
-	const Array: Validate<Array<any>>;
 	const Error: Validate<Error>;
-	const Map: Validate<Map<any, any>>;
-	const Set: Validate<Set<any>>;
-	const WeakMap: Validate<WeakMap<any, any>>;
-	const WeakSet: Validate<WeakSet<any>>;
-	const Promise: Validate<Promise<any>>;
+	const Integer: Validate<number>;
 }

@@ -4,7 +4,7 @@ import * as Utils from '../Utils/index.mjs';
 export function* CauseReader(cause) {
 	let current = cause;
 
-	while (Type.Object.Error(current) || current instanceof Utils.MoldCause) {
+	while (Type.Helper.Error(current) || current instanceof Utils.MoldCause) {
 		yield current;
 		current = current.next;
 	}

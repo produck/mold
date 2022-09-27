@@ -29,14 +29,10 @@ type NativeSchema<Type = any> = (
 ) => Schema<Type>
 
 type NumberNativeSchema = NativeSchema<number>;
+type Edge = number | [number];
 
 export const Number: NumberNativeSchema;
-
-export const NumberRange: (
-	edge?: [minValue?: number, maxValue?: number],
-	open?: [minOpen?: boolean, maxOpen?: boolean],
-) => NumberNativeSchema;
-
+export const NumberRange: (min?: Edge, max?: Edge) => NumberNativeSchema;
 export const Integer: NumberNativeSchema;
 export const IntegerMultipleOf: (base: number) => NumberNativeSchema;
 

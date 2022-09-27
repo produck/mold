@@ -112,6 +112,7 @@ describe('NativeSchemaProvider::', function () {
 		{ Schema: Preset.Function, name: 'Function', value: () => {} },
 		{ Schema: Preset.Symbol, name: 'Symbol', value: Symbol() },
 		{ Schema: Preset.Integer, name: 'Integer', value: 2 },
+		{ Schema: Preset.BigInt, name: 'BigInt', value: BigInt(0) },
 	]) {
 		describe(`${preset.name}`, function () {
 			it('should create a required schema.', function () {

@@ -26,10 +26,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        
+
     - name: Install npm dependencies
       run: npm run deps:install
-      
+
     - name: Run tests
       run: npx lerna run coverage
 
@@ -38,3 +38,4 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: "./packages/mold/coverage/lcov.info"
+        base-path: "packages/mold"

@@ -147,58 +147,37 @@ describe('NativeSchemaProvider::', function () {
 	}
 
 	describe('NumberRange()', function () {
-		it('should throw if bad edge.', function () {
-			assert.throws(() => Preset.NumberRange(null), {
+		it('should throw if bad min.', function () {
+			const expected = {
 				name: 'TypeError',
-				message: 'Invalid "edge", one "array like [minValue, maxValue]" expected.'
-			});
+				message: 'Invalid "min", one "number or [number]" expected.'
+			};
+
+			assert.throws(() => Preset.NumberRange(null), expected);
+			assert.throws(() => Preset.NumberRange([]), expected);
+			assert.throws(() => Preset.NumberRange([null]), expected);
 		});
 
-		it('should throw if bad open.', function () {
-			assert.throws(() => Preset.NumberRange([0, 1], null), {
+		it('should throw if bad max.', function () {
+			const expected = {
 				name: 'TypeError',
-				message: 'Invalid "open", one "array like [minOpen, maxOpen]" expected.'
-			});
+				message: 'Invalid "max", one "number or [number]" expected.'
+			};
+
+			assert.throws(() => Preset.NumberRange(0, null), expected);
+			assert.throws(() => Preset.NumberRange([0], []), expected);
+			assert.throws(() => Preset.NumberRange(0, [null]), expected);
 		});
 
-		it('should throw if bad dege[0].', function () {
-			assert.throws(() => Preset.NumberRange([]), {
-				name: 'TypeError',
-				message: 'Invalid "edge[0]", one "interger as [minValue,]" expected.'
-			});
-		});
-
-		it('should throw if bad dege[1].', function () {
-			assert.throws(() => Preset.NumberRange([1]), {
-				name: 'TypeError',
-				message: 'Invalid "edge[1]", one "interger as [, maxValue]" expected.'
-			});
-		});
-
-		it('should throw if bad open[0].', function () {
-			assert.throws(() => Preset.NumberRange([0, 1], []), {
-				name: 'TypeError',
-				message: 'Invalid "open[0]", one "boolean as [minOpen]" expected.'
-			});
-		});
-
-		it('should throw if bad open[1].', function () {
-			assert.throws(() => Preset.NumberRange([0, 1], [true]), {
-				name: 'TypeError',
-				message: 'Invalid "open[1]", one "boolean as [, maxOpen]" expected.'
-			});
-		});
-
-		it('should throw if bad range.', function () {
-			assert.throws(() => Preset.NumberRange([2, 1]), {
-				name: 'RangeError',
-				message: 'It should be edge[0] <= edge [1].'
+		it('shoud throw if min >= max', function () {
+			assert.throws(() => Preset.NumberRange(100, 0), {
+				message: 'It should be min < max.'
 			});
 		});
 
 		describe('schema::', function () {
 			it('should hit range (0, 100)', function () {
-				const schema = Preset.NumberRange([0, 100], [true, true])();
+				const schema = Preset.NumberRange(0, 100)();
 
 				assert.strictEqual(schema(1), 1);
 				assert.strictEqual(schema(99), 99);
@@ -207,7 +186,7 @@ describe('NativeSchemaProvider::', function () {
 			});
 
 			it('should hit range (0, 100]', function () {
-				const schema = Preset.NumberRange([0, 100], [true, false])();
+				const schema = Preset.NumberRange(0, [100])();
 
 				assert.strictEqual(schema(1), 1);
 				assert.strictEqual(schema(100), 100);
@@ -216,7 +195,7 @@ describe('NativeSchemaProvider::', function () {
 			});
 
 			it('should hit range [0, 100)', function () {
-				const schema = Preset.NumberRange([0, 100], [false, true])();
+				const schema = Preset.NumberRange([0], 100)();
 
 				assert.strictEqual(schema(0), 0);
 				assert.strictEqual(schema(99), 99);
@@ -225,7 +204,7 @@ describe('NativeSchemaProvider::', function () {
 			});
 
 			it('should hit range [0, 100]', function () {
-				const schema = Preset.NumberRange([0, 100], [false, false])();
+				const schema = Preset.NumberRange([0], [100])();
 
 				assert.strictEqual(schema(0), 0);
 				assert.strictEqual(schema(100), 100);

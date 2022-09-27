@@ -61,72 +61,34 @@ export const Function = SchemaProvider(Type.Native.Function, 'function');
 export const Symbol = SchemaProvider(Type.Native.Symbol, 'symbol');
 export const Integer = SchemaProvider(Type.Number.Integer, 'integer');
 
-const DEFAULT = {
-	EDGE: [-Infinity, +Infinity],
-	OPEN: [false, false]
+const parseEdge = (value, role) => {
+	const isNumber = Type.Native.Number(value);
+
+	const isClosedNumber = Type.Object.Array(value) &&
+		value.length === 1 && Type.Native.Number(value[0]);
+
+	if (!isNumber && !isClosedNumber) {
+		Utils.throwError(role, 'number or [number]');
+	}
+
+	return { closed: isClosedNumber, value };
 };
 
-const NumberRangeValidate = {
-	[0b00]: (min, max) => any => any >= min && any <= max,
-	[0b01]: (min, max) => any => any >= min && any < max,
-	[0b10]: (min, max) => any => any > min && any <= max,
-	[0b11]: (min, max) => any => any > min && any < max,
-};
-
-const flagOfOpen = open => {
-	let flag = 0;
-
-	if (open[0]) {
-		flag |= 0b10;
-	}
-
-	if (open[1]) {
-		flag |= 0b01;
-	}
-
-	return flag;
-};
-
-export const NumberRange = (edge = DEFAULT.EDGE, open = DEFAULT.OPEN) => {
-	if (!Type.Object.Array(edge)) {
-		Utils.throwError('edge', 'array like [minValue, maxValue]');
-	}
-
-	const [minValue, maxValue] = edge;
-
-	if (!Type.Native.Number(minValue)) {
-		Utils.throwError('edge[0]', 'interger as [minValue,]');
-	}
-
-	if (!Type.Native.Number(maxValue)) {
-		Utils.throwError('edge[1]', 'interger as [, maxValue]');
-	}
+export const NumberRange = (min = -Infinity, max = +Infinity) => {
+	const { value: minValue, closed: minClosed } = parseEdge(min, 'min');
+	const { value: maxValue, closed: maxClosed } = parseEdge(max, 'max');
 
 	if (minValue > maxValue) {
-		throw new RangeError('It should be edge[0] <= edge [1].');
+		throw new Error('It should be min < max.');
 	}
 
-	if (!Type.Object.Array(open)) {
-		Utils.throwError('open', 'array like [minOpen, maxOpen]');
-	}
+	const gtMin = minClosed ? any => any >= minValue : any => any > minValue;
+	const ltMax = maxClosed ? any => any <= maxValue : any => any < maxValue;
+	const validate = any => Type.Native.Number(any) && gtMin(any) && ltMax(any);
 
-	const [minOpen, maxOpen] = open;
-
-	if (!Type.Native.Boolean(minOpen)) {
-		Utils.throwError('open[0]', 'boolean as [minOpen]');
-	}
-
-	if (!Type.Native.Boolean(maxOpen)) {
-		Utils.throwError('open[1]', 'boolean as [, maxOpen]');
-	}
-
-	const flag = flagOfOpen(open);
-	const validateRange = NumberRangeValidate[flag](minValue, maxValue);
-	const validate = any => Type.Native.Number(any) && validateRange(any);
-
-	const minSymbol = minOpen ? '(' : '[';
-	const maxSymbol = maxOpen ? ')' : ']';
-	const expected = `number in ${minSymbol}${edge.join(', ')}${maxSymbol}`;
+	const minSymbol = minClosed ? '[' : '(';
+	const maxSymbol = maxClosed ? ']' : ')';
+	const expected = `number in ${minSymbol}${minValue, maxValue}${maxSymbol}`;
 
 	return SchemaProvider(validate, expected);
 };
@@ -143,15 +105,15 @@ export const IntegerMultipleOf = (base = 1) => {
 
 const pow2 = exp => Math.pow(2, exp);
 
-export const Port = NumberRange([1, pow2(16) - 1]);
-export const INT8 = NumberRange([-pow2(7), pow2(7) - 1]);
-export const UINT8 = NumberRange([0, pow2(8) - 1]);
-export const INT16 = NumberRange([-pow2(15), pow2(15) - 1]);
-export const UINT16 = NumberRange([0, pow2(16) - 1]);
-export const INT24 = NumberRange([-pow2(23), pow2(23) - 1]);
-export const UINT24 = NumberRange([0, pow2(24) - 1]);
-export const INT32 = NumberRange([-pow2(31), pow2(31) - 1]);
-export const UINT32 = NumberRange([0, pow2(32) - 1]);
+export const Port = NumberRange([1], [pow2(16) - 1]);
+export const INT8 = NumberRange([-pow2(7)], [pow2(7) - 1]);
+export const UINT8 = NumberRange([0], [pow2(8) - 1]);
+export const INT16 = NumberRange([-pow2(15)], [pow2(15) - 1]);
+export const UINT16 = NumberRange([0], [pow2(16) - 1]);
+export const INT24 = NumberRange([-pow2(23)], [pow2(23) - 1]);
+export const UINT24 = NumberRange([0], [pow2(24) - 1]);
+export const INT32 = NumberRange([-pow2(31)], [pow2(31) - 1]);
+export const UINT32 = NumberRange([0], [pow2(32) - 1]);
 export const Byte = UINT8;
 
 export const StringPattern = (pattern, name) => {

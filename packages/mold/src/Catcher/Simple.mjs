@@ -42,7 +42,7 @@ export const SimpleCatcher = topCase => {
 	const state = {
 		path: [],
 		required: false,
-		expected: '',
+		expected: 'unknown',
 		tail: null
 	};
 

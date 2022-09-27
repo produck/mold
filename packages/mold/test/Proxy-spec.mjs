@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import { describe, it } from 'mocha';
-import { Normalizer, Circular, Custom } from '../src/index.mjs';
+import { Normalizer, Circular, Custom, Catcher } from '../src/index.mjs';
 
 describe('Normalizer::', function () {
 	it('should throw if bad schema.', function () {
@@ -34,8 +34,16 @@ describe('Normalizer::', function () {
 				flag = true;
 			});
 
-			normalize()
+			normalize();
 			assert.strictEqual(flag, true);
+		});
+
+		it('should throw if catcher = Throw', function () {
+			const normalize = Normalizer(() => {
+				throw 'foo';
+			}, Catcher.Throw);
+
+			assert.throws(() => normalize());
 		});
 	});
 });

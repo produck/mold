@@ -8,6 +8,10 @@ export const Constant = (value) => {
 };
 
 export const Enum = (valueList = []) => {
+	if (!Type.Object.Array(valueList)) {
+		Utils.throwError('valueList', 'array');
+	}
+
 	const values = valueList.map(value => JSON.stringify(value)).join(', ');
 
 	return Simplex.Value(any => valueList.includes(any), `value in ${values}`);
@@ -15,7 +19,14 @@ export const Enum = (valueList = []) => {
 
 export const Null = Constant(null);
 export const NotNull = Compound.Not(Null);
-export const OrNull = (schema) => Compound.Or([Null, schema]);
+
+export const OrNull = (schema) => {
+	if (!Type.Native.Function(schema)) {
+		Utils.throwError('schema', 'function');
+	}
+
+	return Compound.Or([Null, schema]);
+};
 
 export const Instance = Constructor => {
 	if (!Type.Native.Function(Constructor)) {
@@ -27,7 +38,7 @@ export const Instance = Constructor => {
 	return Simplex.Value(validate, `${Constructor.name} instance`);
 };
 
-const NativeSchemaProvider = (validate, expected) => {
+const SchemaProvider = (validate, expected) => {
 	return (defaultValue) => {
 		const finalArgs = [validate, expected];
 
@@ -43,12 +54,12 @@ const NativeSchemaProvider = (validate, expected) => {
 	};
 };
 
-export const Number = NativeSchemaProvider(Type.Native.Number, 'number');
-export const String = NativeSchemaProvider(Type.Native.String, 'string');
-export const Boolean = NativeSchemaProvider(Type.Native.Boolean, 'boolean');
-export const Function = NativeSchemaProvider(Type.Native.Function, 'function');
-export const Symbol = NativeSchemaProvider(Type.Native.Symbol, 'symbol');
-export const Integer = NativeSchemaProvider(Type.Number.Integer, 'integer');
+export const Number = SchemaProvider(Type.Native.Number, 'number');
+export const String = SchemaProvider(Type.Native.String, 'string');
+export const Boolean = SchemaProvider(Type.Native.Boolean, 'boolean');
+export const Function = SchemaProvider(Type.Native.Function, 'function');
+export const Symbol = SchemaProvider(Type.Native.Symbol, 'symbol');
+export const Integer = SchemaProvider(Type.Number.Integer, 'integer');
 
 const DEFAULT = {
 	EDGE: [-Infinity, +Infinity],
@@ -77,12 +88,11 @@ const flagOfOpen = open => {
 };
 
 export const NumberRange = (edge = DEFAULT.EDGE, open = DEFAULT.OPEN) => {
-	const [minValue, maxValue] = edge;
-	const [minOpen, maxOpen] = open;
-
 	if (!Type.Object.Array(edge)) {
 		Utils.throwError('edge', 'array like [minValue, maxValue]');
 	}
+
+	const [minValue, maxValue] = edge;
 
 	if (!Type.Native.Number(minValue)) {
 		Utils.throwError('edge[0]', 'interger as [minValue,]');
@@ -92,16 +102,22 @@ export const NumberRange = (edge = DEFAULT.EDGE, open = DEFAULT.OPEN) => {
 		Utils.throwError('edge[1]', 'interger as [, maxValue]');
 	}
 
+	if (minValue > maxValue) {
+		throw new RangeError('It should be edge[0] <= edge [1].');
+	}
+
 	if (!Type.Object.Array(open)) {
 		Utils.throwError('open', 'array like [minOpen, maxOpen]');
 	}
 
+	const [minOpen, maxOpen] = open;
+
 	if (!Type.Native.Boolean(minOpen)) {
-		Utils.throwError('open[0]', 'boolean as [min]');
+		Utils.throwError('open[0]', 'boolean as [minOpen]');
 	}
 
 	if (!Type.Native.Boolean(maxOpen)) {
-		Utils.throwError('open[1]', 'boolean as [, max]');
+		Utils.throwError('open[1]', 'boolean as [, maxOpen]');
 	}
 
 	const flag = flagOfOpen(open);
@@ -112,7 +128,7 @@ export const NumberRange = (edge = DEFAULT.EDGE, open = DEFAULT.OPEN) => {
 	const maxSymbol = maxOpen ? ')' : ']';
 	const expected = `number in ${minSymbol}${edge.join(', ')}${maxSymbol}`;
 
-	return NativeSchemaProvider(validate, expected);
+	return SchemaProvider(validate, expected);
 };
 
 export const IntegerMultipleOf = (base = 1) => {
@@ -122,7 +138,7 @@ export const IntegerMultipleOf = (base = 1) => {
 
 	const validate = any => Type.Number.Integer(any) && any % base === 0;
 
-	return NativeSchemaProvider(validate, `integer multiple of ${base}`);
+	return SchemaProvider(validate, `integer multiple of ${base}`);
 };
 
 const pow2 = exp => Math.pow(2, exp);
@@ -138,19 +154,27 @@ export const INT32 = NumberRange([-pow2(31), pow2(31) - 1]);
 export const UINT32 = NumberRange([0, pow2(32) - 1]);
 export const Byte = UINT8;
 
-export const StringPattern = (pattern, name = `/${pattern.source}/`) => {
+export const StringPattern = (pattern, name) => {
 	if (!Type.Object.RegExp(pattern)) {
 		Utils.throwError('pattern', 'RegExp');
 	}
 
+	if (Type.Native.Undefined(name)) {
+		name = `/${pattern.source}/`;
+	}
+
+	if (!Type.Native.String(name)) {
+		Utils.throwError('pattern name', 'string');
+	}
+
 	const validate = any => Type.Native.String(any) && pattern.test(any);
 
-	return NativeSchemaProvider(validate, `string like ${name}`);
+	return SchemaProvider(validate, `string like ${name}`);
 };
 
-export const StringLength = (min, max = min) => {
-	if (!Type.Number.Integer(min)) {
-		Utils.throwError('min', 'integer');
+export const StringLength = (min = 0, max = min) => {
+	if (!Type.Number.Integer(min) || min < 0) {
+		Utils.throwError('min', 'integer >= 0');
 	}
 
 	if (!Type.Number.Integer(max) || max < min) {
@@ -163,9 +187,5 @@ export const StringLength = (min, max = min) => {
 
 	const expectedLength = min === max ? `${min}` : `${min}~${max}`;
 
-	return NativeSchemaProvider(validate, `string length ${expectedLength}`);
-};
-
-export const ArrayLength = () => {
-
+	return SchemaProvider(validate, `string length ${expectedLength}`);
 };

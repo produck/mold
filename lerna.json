@@ -8,5 +8,10 @@
 		"example/cjs",
 		"example/mjs",
 		"example/ts"
-	]
+	],
+	"command": {
+		"publish": {
+			"ignoreChanges": "mold-example-*"
+		}
+	}
 }

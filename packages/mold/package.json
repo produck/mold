@@ -10,7 +10,6 @@
 	"author": "ChaosLee <chaos2lee@qq.com>",
 	"homepage": "https://github.com/produck/mold/tree/main/packages/mold#readme",
 	"license": "MIT",
-	"type": "module",
 	"types": "types/index.d.js",
 	"files": [
 		"dist/mold.cjs",
@@ -21,11 +20,12 @@
 	"publishConfig": {
 		"access": "public"
 	},
+	"main": "dist/mold.cjs",
+	"type": "module",
 	"exports": {
 		"import": "./src/index.mjs",
 		"require": "./dist/mold.cjs"
 	},
-	"main": "index.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/produck/mold.git"

@@ -1,29 +1,11 @@
 {
-	"name": "@produck/mold",
-	"version": "0.0.0",
-	"description": "Using to generate normalize function.",
-	"main": "index.js",
+	"name": "@produck/mold-packages",
+	"private": true,
 	"scripts": {
 		"deps:install": "npm -v && npm i && lerna bootstrap",
 		"deps:clean": "lerna clean -y"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/produck/mold.git"
-	},
-	"keywords": [
-		"normalize",
-		"options",
-		"utils"
-	],
-	"author": "ChaosLee",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/produck/mold/issues"
-	},
-	"homepage": "https://github.com/produck/mold#readme",
 	"devDependencies": {
-		"eslint": "^8.24.0",
 		"lerna": "^5.5.4"
 	}
 }

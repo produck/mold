@@ -1,6 +1,6 @@
 {
 	"name": "mold-example-ts",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "> TODO: description",
 	"author": "ChaosLee <chaos2lee@qq.com>",
 	"homepage": "https://github.com/produck/mold/tree/main/packages/mold-example#readme",
@@ -17,6 +17,6 @@
 		"url": "https://github.com/produck/mold/issues"
 	},
 	"dependencies": {
-		"@produck/mold": "^0.1.0"
+		"@produck/mold": "^0.1.1"
 	}
 }

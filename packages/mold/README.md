@@ -6,7 +6,11 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg?style=flat-square)](https://lerna.js.org/)
 [![NPM](https://img.shields.io/npm/l/@produck/mold)](https://opensource.org/licenses/MIT)
 
-A tool module for defining data type schemas to a normalize function. It has been published as a "Dual CommonJS/ES module [[1]](https://nodejs.org/dist/latest-v16.x/docs/api/packages.html#dual-commonjses-module-packages)" package. It is very simple, flexible. There is also some default "Catcher" for helping to throw a "TypeError" with good readability messages. It can work in "node.js" and browsers.
+A tool module for defining data type schemas to a normalize function. It has been published as a "[Dual CommonJS/ES module](https://nodejs.org/dist/latest-v16.x/docs/api/packages.html#dual-commonjses-module-packages)" package but ESM first. It is very simple, flexible and extensible.
+
+There is also some default "Catcher" for helping to throw a "[TypeError](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError)" with good readability messages. It can be also defined a completely custom catcher to handle the cause if a bad value provided.
+
+It can work in "node.js" and browsers. It is also very friendly with "tree shaking", using "[Rollup](https://rollupjs.org/guide/en/)" so try ESM firstly.
 
 ## Installation
 ```
@@ -40,12 +44,39 @@ normalize({ flag: 'f' }); // throws
 
 ## Usage
 
-### Import as ESM
-
-### Require as CommonJS
-
+### Import & Require
+As esModule,
+```js
+import {
+	Simplex, Simp, S,
+	Compound, Comp, C,
+	Preset, Pre, P,
+	Normalizer, Circular, Custom,
+	Catcher
+} from '@produck/mold';
+```
+As CommonJS,
+```js
+const {
+	Simplex, Simp, S,
+	Compound, Comp, C,
+	Preset, Pre, P,
+	Normalizer, Circular, Custom,
+	Catcher
+} = require('@produck/mold');
+```
 ### Creating a normalize() from schema
+```js
+import { S, P, Normalizer } from '@produck/mold';
 
+const OptionsSchema = S.Object({
+	foo: P.String('bar')
+});
+
+const normalize = Normalizer(OptionsSchema);
+
+const finalOptions = normalize();
+```
 ### Custom Simplex Value Schema
 ```js
 import { Simplex } from '@produck/mold';

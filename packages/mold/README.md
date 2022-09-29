@@ -40,6 +40,10 @@ normalize({ flag: 'f' }); // throws
 
 ## Usage
 
+### Import as ESM
+
+### Require as CommonJS
+
 ### Creating a normalize() from schema
 
 ### Custom Simplex Value Schema

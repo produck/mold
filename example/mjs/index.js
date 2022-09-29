@@ -13,15 +13,16 @@ const Object = S.Object({
 	e: P.OrNull(P.Symbol()),
 	route: Circular(schema => S.Object({
 		name: P.String(),
-		next: schema,
-		previous: schema
+		next: P.OrNull(schema),
+		previous: P.OrNull(schema)
 	})),
 	D: P.Instance(Date),
 	point: S.Tuple([P.Number(0), P.Number(0), P.String('baz')]),
 	port: P.Port(80),
 	p: P.StringPattern(/[a-f0-9]+/)('9f'),
 	l: P.StringLength(5)('33333'),
-	m5: P.IntegerMultipleOf(5)(10)
+	m5: P.IntegerMultipleOf(5)(10),
+	n: P.Null(true)
 });
 
 const normalize = Normalizer(Object);
@@ -34,14 +35,14 @@ try {
 			next: {
 				name: 'b',
 				previous: null,
-				next: {
-				}
+				next: null
 			},
 			previous: null
 		},
 		e: null,
 		D: new Date(),
 		point: [0],
+		n: null
 	});
 
 	console.log(finalOptions);

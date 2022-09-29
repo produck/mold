@@ -1,9 +1,16 @@
 import { Schema } from './schema';
 
-export const Constant: <Type>(value: Type) => Schema<Type>;
-export const Enum: (valueList: Array<any>) => Schema;
+export const Constant: <Type>(
+	value: Type,
+	required?: boolean
+) => Schema<Type>;
 
-export const Null: Schema<null>;
+export const Enum: <Type>(
+	valueList: Array<Type>,
+	defaultIndex?: number | null
+) => Schema<Type>;
+
+export const Null: (required?: boolean) => Schema<null>;
 export const NotNull: Schema<Exclude<any, null>>;
 
 export const OrNull: <

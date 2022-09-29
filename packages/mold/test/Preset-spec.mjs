@@ -14,19 +14,45 @@ describe('Constant()', function () {
 	it('should throw if bad value', function () {
 		assert.throws(() => Preset.Constant(1)(2));
 	});
+
+	it('should throw if bad required.', function () {
+		assert.throws(() => Preset.Constant(1, 1), {
+			name: 'TypeError',
+			message: 'Invalid "required", one "boolean" expected.'
+		});
+	});
 });
 
 describe('Enum()', function () {
 	it('should create a schema.', function () {
-		Preset.Enum();
-		Preset.Enum([]);
 		Preset.Enum([1, 2]);
+		Preset.Enum([1, 2], null);
 	});
 
 	it('should throw if bad valueList', function () {
 		assert.throws(() => Preset.Enum(null), {
 			name: 'TypeError',
 			message: 'Invalid "valueList", one "array" expected.'
+		});
+	});
+
+	it('should throw if empty valueList', function () {
+		assert.throws(() => Preset.Enum([]), {
+			message: 'There SHOULD be 1 item at least of a valueList.'
+		});
+	});
+
+	it('should throw if bad defaultIndex.', function () {
+		assert.throws(() => Preset.Enum([1], true), {
+			name: 'TypeError',
+			message: 'Invalid "defaultIndex", one "integer or null" expected.'
+		});
+	});
+
+	it('should throw if bad defaultIndex not in range.', function () {
+		assert.throws(() => Preset.Enum([1], -1), {
+			name: 'RangeError',
+			message: 'The default index MUST be in [0, 0].'
 		});
 	});
 
@@ -41,11 +67,13 @@ describe('Enum()', function () {
 
 describe('Null()', function () {
 	it('should pass', function () {
-		assert.strictEqual(Preset.Null(null), null);
+		assert.strictEqual(Preset.Null()(undefined, true), null);
+		assert.strictEqual(Preset.Null(false)(undefined, true), null);
+		assert.strictEqual(Preset.Null(false)(null), null);
 	});
 
 	it('should throw if bad value', function () {
-		assert.throws(() => Preset.Null(1));
+		assert.throws(() => Preset.Null()(1));
 	});
 });
 

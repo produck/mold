@@ -3,29 +3,62 @@ import * as Utils from './Utils/index.mjs';
 import * as Simplex from './Simplex/index.mjs';
 import * as Compound from './Compound/index.mjs';
 
-export const Constant = (value) => {
-	return Simplex.Value(any => any === value, `a constant(${value})`);
+export const Constant = (value, required = false) => {
+	if (!Type.Native.Boolean(required)) {
+		Utils.throwError('required', 'boolean');
+	}
+
+	const args = [
+		any => any === value,
+		`a constant(${value})`
+	];
+
+	if (!required) {
+		args.push(() => value);
+	}
+
+	return Simplex.Value(...args);
 };
 
-export const Enum = (valueList = []) => {
+export const Enum = (valueList, defaultIndex = 0) => {
 	if (!Type.Helper.Array(valueList)) {
 		Utils.throwError('valueList', 'array');
 	}
 
-	const values = valueList.map(value => JSON.stringify(value)).join(', ');
+	const length = valueList.length;
 
-	return Simplex.Value(any => valueList.includes(any), `value in ${values}`);
+	if (length < 1) {
+		throw new Error('There SHOULD be 1 item at least of a valueList.');
+	}
+
+	const values = valueList.map(value => JSON.stringify(value)).join(', ');
+	const args = [any => valueList.includes(any), `value in ${values}`];
+
+	if (!Type.Helper.Null(defaultIndex)) {
+		if (!Type.Helper.Integer(defaultIndex)) {
+			Utils.throwError('defaultIndex', 'integer or null');
+		}
+
+		if (defaultIndex >= length || defaultIndex < 0) {
+			throw new RangeError(`The default index MUST be in [0, ${length - 1}].`);
+		}
+
+		args.push(() => valueList[defaultIndex]);
+	}
+
+	return Simplex.Value(...args);
 };
 
-export const Null = Constant(null);
-export const NotNull = Compound.Not(Null);
+export const Null = (required = false) => Constant(null, required);
 
-export const OrNull = (schema) => {
+export const NotNull = Compound.Not(Null(false));
+
+export const OrNull = (schema, required = false) => {
 	if (!Type.Native.Function(schema)) {
 		Utils.throwError('schema', 'function');
 	}
 
-	return Compound.Or([Null, schema]);
+	return Compound.Or([schema, Null(required)]);
 };
 
 export const Instance = Constructor => {

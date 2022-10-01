@@ -2,7 +2,7 @@
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/produck/mold/Node.js%20CI)](https://github.com/produck/mold/actions/workflows/node.js.yml)
 [![Coveralls](https://img.shields.io/coveralls/github/produck/mold)](https://coveralls.io/github/produck/mold)
 [![npm (scoped)](https://img.shields.io/npm/v/@produck/mold)](https://www.npmjs.com/package/@produck/mold)
-[![npm](https://img.shields.io/npm/dw/@produck/koa-forker)](https://www.npmjs.com/package/@produck/mold)
+[![npm](https://img.shields.io/npm/dw/@produck/mold)](https://www.npmjs.com/package/@produck/mold)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg?style=flat-square)](https://lerna.js.org/)
 [![NPM](https://img.shields.io/npm/l/@produck/mold)](https://opensource.org/licenses/MIT)
 

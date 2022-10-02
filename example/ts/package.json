@@ -17,6 +17,6 @@
 		"url": "https://github.com/produck/mold/issues"
 	},
 	"dependencies": {
-		"@produck/mold": "^0.1.1"
+		"@produck/mold": "^0.2.0"
 	}
 }

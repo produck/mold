@@ -62,3 +62,14 @@ export const Custom: CustomSchema;
 export const Cust: CustomSchema;
 
 export const Normalizer: NormalizerConstructor;
+
+export namespace Utils {
+	const throwError: (role: string, expected: string) => never;
+
+	class MoldCause {
+		constructor(value: any);
+		setType(typeName: string): this;
+		append(detail: object): this;
+		throw(next?: Error | MoldCause): never;
+	}
+}

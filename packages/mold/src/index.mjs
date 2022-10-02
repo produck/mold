@@ -16,6 +16,9 @@ export { Custom, Custom as Cust };
 import * as Type from './Type/index.mjs';
 export { Type, Type as T };
 
+import * as Utils from './Utils/index.mjs';
+export { Utils, Utils as U };
+
 import * as Catcher from './Catcher/index.mjs';
 export { Catcher };
 

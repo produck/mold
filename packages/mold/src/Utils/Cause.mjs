@@ -7,8 +7,8 @@ export class MoldCause {
 		this.next = null;
 	}
 
-	setType(value) {
-		this.type = value;
+	setType(typeName) {
+		this.type = typeName;
 
 		return this;
 	}

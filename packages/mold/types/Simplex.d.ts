@@ -2,17 +2,37 @@ import { Schema } from './schema';
 
 type DefaultValue = () => any | null;
 
+interface ArrayOptionsObject<
+	CustomSchema extends Schema = Schema
+> {
+	items?: CustomSchema;
+	minLength?: number;
+	maxLength?: number;
+	key?: (item?: any, index?: number) => any;
+}
+
+type ArrayOptions<
+	CustomSchema extends Schema = Schema
+> = ArrayOptionsObject<CustomSchema> | Schema;
+
+type ArrayItemSchemaType<
+	CustomSchemaOptions extends ArrayOptions
+> = CustomSchemaOptions extends ArrayOptionsObject<infer S>
+	? ReturnType<S> : CustomSchemaOptions extends Schema
+		? ReturnType<CustomSchemaOptions>
+		: never;
+
 interface ArraySchema {
-	<CustomSchema extends Schema = Schema<any>>(
-		itemSchema: CustomSchema,
+	<CustomArrayOptions extends ArrayOptions = {}>(
+		options: CustomArrayOptions,
 		expected?: string,
 		DefaultValue?: DefaultValue
-	): Schema<Array<ReturnType<CustomSchema>>>;
+	): Schema<Array<ArrayItemSchemaType<CustomArrayOptions>>>;
 
-	<CustomSchema extends Schema = Schema<any>>(
-		itemSchema: CustomSchema,
+	<CustomArrayOptions extends ArrayOptions = {}>(
+		options: CustomArrayOptions,
 		DefaultValue: DefaultValue
-	): Schema<Array<ReturnType<CustomSchema>>>;
+	): Schema<Array<ArrayItemSchemaType<CustomArrayOptions>>>;
 }
 
 type SchemaTuple<S extends Schema = Schema> = []

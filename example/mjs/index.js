@@ -25,6 +25,13 @@ const Object = S.Object({
 	n: P.Null(true)
 });
 
+const test = S.Array({
+	items: P.String(),
+	maxLength: 1
+});
+
+test()[0]
+
 const normalize = Normalizer(Object);
 
 try {

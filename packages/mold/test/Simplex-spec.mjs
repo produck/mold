@@ -228,16 +228,53 @@ describe('Simplex::', function () {
 	});
 
 	describe('ArraySchema::', function () {
-		it('should throw if bad itemSchema.', function () {
+		it('should throw if bad options.', function () {
 			assert.throws(() => Simplex.Array(null), {
 				name: 'TypeError',
-				message: 'Invalid "itemSchema", one "function" expected.'
+				message: 'Invalid "options", one "function or object" expected.'
 			});
+		});
+
+		it('should throw if bad options.items', function () {
+			assert.throws(() => Simplex.Array({ items: null }), {
+				name: 'TypeError',
+				message: 'Invalid ".items", one "function" expected.'
+			});
+		});
+
+		it('should throw if bad options.minLength', function () {
+			const expected = {
+				name: 'TypeError',
+				message: 'Invalid ".minLength", one "integer >= 0" expected.'
+			};
+
+			assert.throws(() => Simplex.Array({ minLength: -1 }), expected);
+			assert.throws(() => Simplex.Array({ minLength: null }), expected);
+		});
+
+		it('should throw if bad options.maxLength', function () {
+			const expected = {
+				name: 'TypeError',
+				message: 'Invalid ".maxLength", one "integer >= minLength" expected.'
+			};
+
+			assert.throws(() => Simplex.Array({ maxLength: null }), expected);
+			assert.throws(() => Simplex.Array({ minLength: 10, maxLength: 1 }), expected);
+		});
+
+		it('should throw if bad options.key', function () {
+			const expected = {
+				name: 'TypeError',
+				message: 'Invalid ".key", one "function" expected.'
+			};
+
+			assert.throws(() => Simplex.Array({ key: null }), expected);
 		});
 
 		it('should create an array schema.', function () {
 			Simplex.Array();
 			Simplex.Array(() => {});
+			Simplex.Array({});
 		});
 
 		describe('schema::', function () {
@@ -266,6 +303,23 @@ describe('Simplex::', function () {
 				});
 
 				assert.throws(() => schema([1]));
+			});
+
+			it('should throw if bad length.', function () {
+				const schema = Simplex.Array({
+					minLength: 4,
+					maxLength: 5
+				});
+
+				assert.throws(() => schema([]));
+				assert.throws(() => schema([1, 1, 1, 1, 1, 1]));
+				assert.deepStrictEqual(schema([1, 1, 1, 1, 1]), [1, 1, 1, 1, 1]);
+			});
+
+			it('should throw if duplicated.', function () {
+				const schema = Simplex.Array({ key: item => item });
+
+				assert.throws(() => schema([1, 1]));
 			});
 		});
 	});

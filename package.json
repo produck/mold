@@ -4,6 +4,7 @@
 	"scripts": {
 		"deps:install": "npm -v && npm i && lerna bootstrap",
 		"deps:clean": "lerna clean -y",
+		"deps:ci-install": "npm i && lerna bootstrap --no-private",
 		"publish": "lerna publish --no-private"
 	},
 	"devDependencies": {

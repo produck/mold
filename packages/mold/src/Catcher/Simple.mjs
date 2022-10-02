@@ -18,6 +18,16 @@ const UPDATE_VALUE_DETAIL = (cause, state) => {
 const CauseTypeHandler = {
 	['SimplexRequired']: UPDATE_VALUE_DETAIL,
 	['Value']: UPDATE_VALUE_DETAIL,
+	['ArrayLength']: (cause, state) => {
+		const { minLength, maxLength } = cause.detail;
+
+		UPDATE_VALUE_DETAIL(cause, state);
+		state.tail = `Length should be ${minLength}-${maxLength}`;
+	},
+	['ArrayKey']: (cause, state) => {
+		UPDATE_VALUE_DETAIL(cause, state);
+		state.tail = `The element at [${cause.detail.index}] is duplicated.`;
+	},
 	['ArrayItem']: (cause, state) => state.path.push({
 		type: 'array',
 		value: cause.detail.index

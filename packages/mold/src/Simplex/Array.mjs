@@ -72,7 +72,7 @@ export const ArraySchema = (options = DEFAULT_OPTIONS, ...schemaOptions) => {
 		const length = _array.length;
 
 		if (length < minLength || length > maxLength) {
-			cause.setType('ArrayLength').append({ ...DETAILS }).throw();
+			cause.setType('ArrayLength').append(DETAILS).throw();
 		}
 
 		const set = new Set();

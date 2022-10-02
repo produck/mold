@@ -27,7 +27,7 @@ const Object = S.Object({
 
 const test = S.Array({
 	items: P.String(),
-	maxLength: 1
+	key: (item, index) => item
 });
 
 test()[0]

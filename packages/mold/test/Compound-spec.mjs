@@ -1,5 +1,4 @@
 import assert from 'node:assert';
-import { describe, it } from 'mocha';
 import { Compound } from '../src/index.mjs';
 
 describe('Compound::', function () {

@@ -1,5 +1,4 @@
 import assert from 'node:assert';
-import { describe, it } from 'mocha';
 import { Simplex } from '../src/index.mjs';
 import { OptionsParser } from '../src/Simplex/OptionsParser.mjs';
 

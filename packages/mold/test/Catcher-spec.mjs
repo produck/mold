@@ -1,5 +1,4 @@
 import assert from 'node:assert';
-import { describe, it } from 'mocha';
 import { Catcher, Normalizer, P, S } from '../src/index.mjs';
 
 describe('Catcher::Simple', function () {

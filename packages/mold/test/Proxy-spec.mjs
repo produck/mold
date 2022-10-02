@@ -1,5 +1,4 @@
 import assert from 'node:assert';
-import { describe, it } from 'mocha';
 import { Normalizer, Circular, Custom, Catcher } from '../src/index.mjs';
 
 describe('Normalizer::', function () {

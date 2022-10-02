@@ -31,7 +31,7 @@ jobs:
       run: npm run deps:ci-install
 
     - name: Run tests
-      run: npx lerna run coverage
+      run: npm run coverage
 
     - name: Coveralls Finished
       uses: coverallsapp/github-action@master

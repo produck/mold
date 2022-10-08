@@ -3,6 +3,8 @@ import * as Utils from './Utils/index.mjs';
 import * as Simplex from './Simplex/index.mjs';
 import * as Compound from './Compound/index.mjs';
 
+//TODO: any(required?): any
+
 export const Constant = (value, required = false) => {
 	if (!Type.Native.Boolean(required)) {
 		Utils.throwError('required', 'boolean');

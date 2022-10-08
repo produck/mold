@@ -3,14 +3,14 @@
 [![Coveralls](https://img.shields.io/coveralls/github/produck/mold)](https://coveralls.io/github/produck/mold)
 [![npm (scoped)](https://img.shields.io/npm/v/@produck/mold)](https://www.npmjs.com/package/@produck/mold)
 [![npm](https://img.shields.io/npm/dw/@produck/mold)](https://www.npmjs.com/package/@produck/mold)
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg?style=flat-square)](https://lerna.js.org/)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![NPM](https://img.shields.io/npm/l/@produck/mold)](https://opensource.org/licenses/MIT)
 
-A tool module for defining data type schemas to a normalize function. It has been published as a "[Dual CommonJS/ES module](https://nodejs.org/dist/latest-v16.x/docs/api/packages.html#dual-commonjses-module-packages)" package but ESM first. It is very simple, flexible and extensible.
+A tool module for defining data type schemas to a normalize function. It published as a "[Dual CommonJS/ES module](https://nodejs.org/dist/latest-v16.x/docs/api/packages.html#dual-commonjses-module-packages)" package but ESM first. It is very simple, flexible and extensible.
 
-There is also some default "Catcher" for helping to throw a "[TypeError](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError)" with good readability messages. It can be also defined a completely custom catcher to handle the cause if a bad value provided.
+There is also some default "Catcher". It is helping to throw a "[TypeError](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError)" with good readability messages. It can be also defined a completely custom catcher to handle the cause if a bad value provided.
 
-It can work in "node.js" and browsers. It is also very friendly with "tree shaking", using "[Rollup](https://rollupjs.org/guide/en/)" so try ESM firstly.
+It can work in "node.js" and browsers. It is also very friendly with "tree shaking", using "[Rollup](https://rollupjs.org/guide/en/)" so try ESM.
 
 ## Installation
 ```
@@ -54,6 +54,10 @@ import {
 	Normalizer, Circular, Custom,
 	Catcher
 } from '@produck/mold';
+// Or
+import * as Mold from '@produck/mold';
+
+// Your code...
 ```
 As CommonJS,
 ```js
@@ -64,6 +68,10 @@ const {
 	Normalizer, Circular, Custom,
 	Catcher
 } = require('@produck/mold');
+// Or
+const Mold = require('@produck/mold');
+
+// Your code...
 ```
 ### Creating a normalize() from schema
 ```js
@@ -141,6 +149,7 @@ Preset.OrNull();
 Preset.Number();
 ...
 ```
+## Best Practices
 
 ## License
 [MIT](https://github.com/produck/mold/blob/main/LICENSE)

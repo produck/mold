@@ -4,6 +4,22 @@ import * as Simplex from './Simplex/index.mjs';
 import * as Compound from './Compound/index.mjs';
 
 //TODO: any(required?): any
+export const Any = (...args) => {
+	if (args.length > 1) {
+		Utils.throwError('arguments', 'arguments(length<=1)');
+	}
+
+	const valueArgs = [
+		() => true,
+		'any value'
+	];
+
+	if (args.length === 1) {
+		valueArgs.push(() => args[0]);
+	}
+
+	return Simplex.Value(...valueArgs);
+};
 
 export const Constant = (value, required = false) => {
 	if (!Type.Native.Boolean(required)) {
@@ -12,7 +28,7 @@ export const Constant = (value, required = false) => {
 
 	const args = [
 		any => any === value,
-		`a constant(${value})`
+		`constant(${value})`
 	];
 
 	if (!required) {

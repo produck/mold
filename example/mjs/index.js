@@ -2,6 +2,7 @@ import { S, C, P, Normalizer, Circular } from '@produck/mold';
 
 const Object = S.Object({
 	c: P.Constant(1),
+	y: P.Any(null),
 	a: S.Object({
 		b: P.String('foo'),
 		c: P.Boolean(true)

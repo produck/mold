@@ -9,10 +9,7 @@ export const Any = (...args) => {
 		Utils.throwError('arguments', 'arguments(length<=1)');
 	}
 
-	const valueArgs = [
-		() => true,
-		'any value'
-	];
+	const valueArgs = [() => true, 'any value'];
 
 	if (args.length === 1) {
 		valueArgs.push(() => args[0]);
@@ -26,10 +23,7 @@ export const Constant = (value, required = false) => {
 		Utils.throwError('required', 'boolean');
 	}
 
-	const args = [
-		any => any === value,
-		`constant(${value})`
-	];
+	const args = [any => any === value, `constant(${value})`];
 
 	if (!required) {
 		args.push(() => value);

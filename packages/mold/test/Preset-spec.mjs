@@ -1,6 +1,27 @@
 import assert from 'node:assert';
 import { Preset } from '../src/index.mjs';
 
+describe('Any()', function () {
+	it('should create a schema.', function () {
+		Preset.Any();
+		Preset.Any(null);
+	});
+
+	it('should throw if bad arguments.', function () {
+		assert.throws(() => Preset.Any(1, 2));
+	});
+
+	it('should throw if bad value and no defaultValue', function () {
+		assert.throws(() => Preset.Any()(undefined, true));
+	});
+
+	it('should pass.', function () {
+		assert.strictEqual(Preset.Any()(1), 1);
+		assert.strictEqual(Preset.Any(null)(1), 1);
+		assert.strictEqual(Preset.Any(null)(undefined, true), null);
+	});
+});
+
 describe('Constant()', function () {
 	it('should create a schema.', function () {
 		Preset.Constant(1);

@@ -3,7 +3,6 @@ import * as Utils from './Utils/index.mjs';
 import * as Simplex from './Simplex/index.mjs';
 import * as Compound from './Compound/index.mjs';
 
-//TODO: any(required?): any
 export const Any = (...args) => {
 	if (args.length > 1) {
 		Utils.throwError('arguments', 'arguments(length<=1)');

@@ -1,5 +1,7 @@
 import { Schema } from './schema';
 
+export const Any: (defaultValue?: any) => Schema<any>;
+
 export const Constant: <Type>(
 	value: Type,
 	required?: boolean

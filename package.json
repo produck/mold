@@ -8,7 +8,7 @@
 		"lint": "eslint --fix packages/**/*.mjs",
 		"test": "mocha \"packages/**/*-spec.mjs\" -t 999999999 ",
 		"coverage": "c8 --reporter=lcov npm run test",
-		"publish": "npm run lint && lerna publish --no-private"
+		"publish": "npm run lint && npm test && lerna publish --no-private"
 	},
 	"devDependencies": {
 		"c8": "^7.12.0",

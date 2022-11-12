@@ -38,6 +38,6 @@
 		"url": "https://github.com/produck/mold/issues"
 	},
 	"devDependencies": {
-		"rollup": "^2.79.1"
+		"rollup": "^3.3.0"
 	}
 }

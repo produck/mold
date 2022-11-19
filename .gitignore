@@ -103,5 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# vscode
+.vscode
+
+# About this package
 .debug.*
-/.vscode
+**/mold/src/index.cjs

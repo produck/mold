@@ -1,6 +1,6 @@
 {
 	"name": "@produck/mold",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "For helping to create a final options from a defined specification.",
 	"keywords": [
 		"options",

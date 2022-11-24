@@ -23,3 +23,5 @@ import * as Catcher from './Catcher/index.mjs';
 export { Catcher };
 
 export { Normalizer } from './Normalizer.mjs';
+
+export { PROPERTY } from './Simplex/Object.mjs';

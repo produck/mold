@@ -73,3 +73,5 @@ export namespace Utils {
 		throw(next?: Error | MoldCause): never;
 	}
 }
+
+export const PROPERTY: symbol;

@@ -54,7 +54,7 @@ type SchemaTuple<S extends Schema = Schema> = []
 type CombinedTuple<
 	CustomSchemaTuple extends SchemaTuple
 > = {
-	[Index in keyof CustomSchemaTuple]: ReturnType<CustomSchemaTuple[Index]>
+	[Index in keyof CustomSchemaTuple]: ReturnType<CustomSchemaTuple[Index]>;
 };
 
 interface TupleSchema {
@@ -86,13 +86,13 @@ interface ValueSchema {
 }
 
 interface SchemaMap {
-	[key: string]: Schema;
+	[key: string | symbol]: Schema;
 }
 
 type CombinedObject<
 	CustomSchemaMap extends SchemaMap
 > = {
-	[Property in keyof CustomSchemaMap]: ReturnType<CustomSchemaMap[Property]>
+	[Property in keyof CustomSchemaMap]: ReturnType<CustomSchemaMap[Property]>;
 }
 
 interface ObjectSchema {

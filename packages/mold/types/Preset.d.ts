@@ -18,7 +18,8 @@ export const NotNull: Schema<Exclude<any, null>>;
 export const OrNull: <
 	CustomSchema extends Schema = Schema
 >(
-	schema: CustomSchema
+	schema: CustomSchema,
+	required?: boolean
 ) => CustomSchema | Schema<null>;
 
 export const Instance: <

@@ -1,4 +1,4 @@
-import { S, C, P, Normalizer, Circular } from '@produck/mold';
+import { S, C, P, Normalizer, Circular, PROPERTY } from '@produck/mold';
 
 const Object = S.Object({
 	c: P.Constant(1),
@@ -23,7 +23,7 @@ const Object = S.Object({
 	p: P.StringPattern(/[a-f0-9]+/)('9f'),
 	l: P.StringLength(5)('33333'),
 	m5: P.IntegerMultipleOf(5)(10),
-	n: P.Null(true)
+	n: P.Null(true),
 });
 
 const test = S.Array({

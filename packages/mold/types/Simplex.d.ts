@@ -93,6 +93,8 @@ type CombinedObject<
 	CustomSchemaMap extends SchemaMap
 > = {
 	[Property in keyof CustomSchemaMap]: ReturnType<CustomSchemaMap[Property]>;
+} & {
+	[key: string]: ReturnType<CustomSchemaMap[symbol]>
 }
 
 interface ObjectSchema {

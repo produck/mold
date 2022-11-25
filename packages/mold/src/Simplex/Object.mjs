@@ -35,7 +35,7 @@ export const ObjectSchema = (schemaMap = {}, ...schemaOptions) => {
 		}
 
 		const object = {};
-		const extra = { ...object };
+		const extra = { ..._object };
 
 		for (const key in schemaMap) {
 			const schema = schemaMap[key];
@@ -68,7 +68,7 @@ export const ObjectSchema = (schemaMap = {}, ...schemaOptions) => {
 
 			for (const key in extra) {
 				try {
-					object[key] = propertySchema(extra[key], true);
+					object[key] = propertySchema(extra[key], false);
 				} catch (error) {
 					cause.setType('ObjectProperty').append({
 						key, explicit: false

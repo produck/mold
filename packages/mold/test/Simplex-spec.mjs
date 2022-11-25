@@ -1,5 +1,5 @@
-import assert from 'node:assert';
-import { Simplex } from '../src/index.mjs';
+import assert from 'node:assert/strict';
+import { Simplex, PROPERTY } from '../src/index.mjs';
 import { OptionsParser } from '../src/Simplex/OptionsParser.mjs';
 
 describe('Simplex::', function () {
@@ -8,7 +8,7 @@ describe('Simplex::', function () {
 			const schema = Simplex.Schema(() => 'foo', 'foo', false);
 			const value = schema(undefined, true);
 
-			assert.strictEqual(value, 'foo');
+			assert.equal(value, 'foo');
 		});
 
 		it('should create a custom expected schema.', function () {
@@ -74,32 +74,32 @@ describe('Simplex::', function () {
 				const parser = OptionsParser();
 				const options = parser(['foo', null]);
 
-				assert.strictEqual(options.expected, 'foo');
-				assert.strictEqual(options.DefaultValue, null);
+				assert.equal(options.expected, 'foo');
+				assert.equal(options.DefaultValue, null);
 			});
 
 			it('should be [expected].', function () {
 				const parser = OptionsParser();
 				const options = parser(['foo']);
 
-				assert.strictEqual(options.expected, 'foo');
-				assert.strictEqual(options.DefaultValue, null);
+				assert.equal(options.expected, 'foo');
+				assert.equal(options.DefaultValue, null);
 			});
 
 			it('should be [DefaultValue].', function () {
 				const parser = OptionsParser();
 				const options = parser([null]);
 
-				assert.strictEqual(options.expected, 'valid value');
-				assert.strictEqual(options.DefaultValue, null);
+				assert.equal(options.expected, 'valid value');
+				assert.equal(options.DefaultValue, null);
 			});
 
 			it('should be [].', function () {
 				const parser = OptionsParser();
 				const options = parser([null]);
 
-				assert.strictEqual(options.expected, 'valid value');
-				assert.strictEqual(options.DefaultValue, null);
+				assert.equal(options.expected, 'valid value');
+				assert.equal(options.DefaultValue, null);
 			});
 
 			it('should throw if bad arguments.', function () {
@@ -138,7 +138,7 @@ describe('Simplex::', function () {
 				it('should be [expected, required].', function () {
 					const parser = OptionsParser();
 
-					assert.deepStrictEqual(parser([]).toSchemaArgs(), ['valid value', true]);
+					assert.deepEqual(parser([]).toSchemaArgs(), ['valid value', true]);
 				});
 			});
 		});
@@ -157,7 +157,7 @@ describe('Simplex::', function () {
 				const foo = Simplex.Value(() => true, 'bar');
 				const value = foo('baz', false);
 
-				assert.strictEqual(value, 'baz');
+				assert.equal(value, 'baz');
 				assert.throws(() => foo(undefined, true));
 			});
 
@@ -165,7 +165,7 @@ describe('Simplex::', function () {
 				const foo = Simplex.Value(() => true, 'bar', () => 'baz');
 				const value = foo(undefined, true);
 
-				assert.strictEqual(value, 'baz');
+				assert.equal(value, 'baz');
 			});
 
 			it('should throw if not validated.', function () {
@@ -196,22 +196,28 @@ describe('Simplex::', function () {
 		});
 
 		describe('schema::', function () {
+			it('should get a default object.', function () {
+				const schema = Simplex.Object();
+
+				assert.deepEqual(schema(undefined, true), {});
+			});
+
+			it('should pass additional properties.', function () {
+				const schema = Simplex.Object({ [PROPERTY]: _ => _ });
+
+				assert.deepEqual(schema({ a: 1, b: null }, false), { a: 1, b: null });
+			});
+
 			it('should throw if bad _value.', function () {
 				const schema = Simplex.Object();
 
 				assert.throws(() => schema());
 			});
 
-			it('should get a default object.', function () {
-				const schema = Simplex.Object();
-
-				assert.deepStrictEqual(schema(undefined, true), {});
-			});
-
 			it('should get an object with default property.', function () {
 				const schema = Simplex.Object({ foo: () => 'bar' });
 
-				assert.deepStrictEqual(schema(undefined, true), { foo: 'bar' });
+				assert.deepEqual(schema(undefined, true), { foo: 'bar' });
 			});
 
 			it('should throw if bad property.', function () {
@@ -222,6 +228,28 @@ describe('Simplex::', function () {
 				});
 
 				assert.throws(() => schema({}));
+			});
+
+			it('should throw if bad [PROPERTY] schema.', function () {
+				assert.throws(() => Simplex.Object({ [PROPERTY]: 1 }), {
+					message: 'Invalid "schemaMap[@@PROPERTY]", one "function" expected.'
+				});
+			});
+
+			it('should throw if additional properties.', function () {
+				const schema = Simplex.Object({});
+
+				assert.throws(() => schema({ foo: 1 }));
+			});
+
+			it('should throw if a bad additional property', function () {
+				const schema = Simplex.Object({
+					[PROPERTY]: () => {
+						throw new Error('bar');
+					}
+				});
+
+				assert.throws(() => schema({ foo: 1 }));
 			});
 		});
 	});
@@ -280,7 +308,7 @@ describe('Simplex::', function () {
 			it('should get a default [].', function () {
 				const schema = Simplex.Array();
 
-				assert.deepStrictEqual(schema(undefined, true), []);
+				assert.deepEqual(schema(undefined, true), []);
 			});
 
 			it('should throw if bad _value', function () {
@@ -293,7 +321,7 @@ describe('Simplex::', function () {
 				const schema = Simplex.Array();
 				const value = [1, true];
 
-				assert.deepStrictEqual(schema(value), [1, true]);
+				assert.deepEqual(schema(value), [1, true]);
 			});
 
 			it('should throw if bad item.', function () {
@@ -312,7 +340,7 @@ describe('Simplex::', function () {
 
 				assert.throws(() => schema([]));
 				assert.throws(() => schema([1, 1, 1, 1, 1, 1]));
-				assert.deepStrictEqual(schema([1, 1, 1, 1, 1]), [1, 1, 1, 1, 1]);
+				assert.deepEqual(schema([1, 1, 1, 1, 1]), [1, 1, 1, 1, 1]);
 			});
 
 			it('should throw if duplicated.', function () {
@@ -346,7 +374,7 @@ describe('Simplex::', function () {
 			it('should get a default tuple []', function () {
 				const schema = Simplex.Tuple();
 
-				assert.deepStrictEqual(schema(undefined, true), []);
+				assert.deepEqual(schema(undefined, true), []);
 			});
 
 			it('should throw if bad _value.', function () {
@@ -361,7 +389,7 @@ describe('Simplex::', function () {
 					() => 1
 				]);
 
-				assert.deepStrictEqual(schema([]), ['foo', 1]);
+				assert.deepEqual(schema([]), ['foo', 1]);
 			});
 
 			it('should throw if bad element in tuple', function () {

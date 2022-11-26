@@ -74,4 +74,5 @@ export namespace Utils {
 	}
 }
 
+export { Utils as U };
 export const PROPERTY: symbol;

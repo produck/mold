@@ -2,9 +2,9 @@
 	"name": "@produck/mold-workspace",
 	"private": true,
 	"scripts": {
-		"deps:install": "npm -v && npm i && lerna bootstrap",
+		"deps:install": "npm -v && npm install",
 		"deps:clean": "lerna clean -y",
-		"deps:ci-install": "npm i && lerna bootstrap --no-private",
+		"deps:ci-install": "npm install",
 		"lint": "eslint --fix packages/**/*.mjs",
 		"test": "mocha \"packages/**/*-spec.mjs\" -t 999999999 ",
 		"coverage": "c8 --reporter=lcov npm run test",

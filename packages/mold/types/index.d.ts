@@ -1,4 +1,5 @@
 import { Schema } from './schema';
+export { Schema };
 
 import * as Type from './Type';
 export { Type, Type as T };
@@ -56,10 +57,10 @@ interface NormalizerConstructor {
 }
 
 export const Circular: CircularSchema;
-export const Circ: CircularSchema;
+export { Circular as Circ };
 
 export const Custom: CustomSchema;
-export const Cust: CustomSchema;
+export { Custom as Cust };
 
 export const Normalizer: NormalizerConstructor;
 

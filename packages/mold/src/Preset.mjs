@@ -133,7 +133,7 @@ export const NumberRange = (min = -Infinity, max = +Infinity) => {
 
 	const minSymbol = minClosed ? '[' : '(';
 	const maxSymbol = maxClosed ? ']' : ')';
-	const expected = `number in ${minSymbol}${minValue, maxValue}${maxSymbol}`;
+	const expected = `number in ${minSymbol}${minValue}, ${maxValue}${maxSymbol}`;
 
 	return SchemaProvider(validate, expected);
 };

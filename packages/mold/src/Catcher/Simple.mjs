@@ -22,7 +22,7 @@ const CauseTypeHandler = {
 		const { minLength, maxLength } = cause.detail;
 
 		UPDATE_VALUE_DETAIL(cause, state);
-		state.tail = `Length should be ${minLength}-${maxLength}`;
+		state.tail = `Length should be [${minLength}, ${maxLength}]`;
 	},
 	['ArrayKey']: (cause, state) => {
 		UPDATE_VALUE_DETAIL(cause, state);

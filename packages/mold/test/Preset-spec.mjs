@@ -38,7 +38,7 @@ describe('Constant()', function () {
 	it('should throw if bad required.', function () {
 		assert.throws(() => Preset.Constant(1, 1), {
 			name: 'TypeError',
-			message: 'Invalid "required", one "boolean" expected.'
+			message: 'Invalid "required", one "boolean" expected.',
 		});
 	});
 });
@@ -52,27 +52,27 @@ describe('Enum()', function () {
 	it('should throw if bad valueList', function () {
 		assert.throws(() => Preset.Enum(null), {
 			name: 'TypeError',
-			message: 'Invalid "valueList", one "array" expected.'
+			message: 'Invalid "valueList", one "array" expected.',
 		});
 	});
 
 	it('should throw if empty valueList', function () {
 		assert.throws(() => Preset.Enum([]), {
-			message: 'There SHOULD be 1 item at least of a valueList.'
+			message: 'There SHOULD be 1 item at least of a valueList.',
 		});
 	});
 
 	it('should throw if bad defaultIndex.', function () {
 		assert.throws(() => Preset.Enum([1], true), {
 			name: 'TypeError',
-			message: 'Invalid "defaultIndex", one "integer or null" expected.'
+			message: 'Invalid "defaultIndex", one "integer or null" expected.',
 		});
 	});
 
 	it('should throw if bad defaultIndex not in range.', function () {
 		assert.throws(() => Preset.Enum([1], -1), {
 			name: 'RangeError',
-			message: 'The default index MUST be in [0, 0].'
+			message: 'The default index MUST be in [0, 0].',
 		});
 	});
 
@@ -111,7 +111,7 @@ describe('OrNull()', function () {
 	it('should throw if bad schema.', function () {
 		assert.throws(() => Preset.OrNull(null), {
 			name: 'TypeError',
-			message: 'Invalid "schema", one "function" expected.'
+			message: 'Invalid "schema", one "function" expected.',
 		});
 	});
 
@@ -133,7 +133,7 @@ describe('Instance()', function () {
 	it('should throw if bad Constructor.', function () {
 		assert.throws(() => Preset.Instance(null), {
 			name: 'TypeError',
-			message: 'Invalid "Constructor", one "class or function" expected.'
+			message: 'Invalid "Constructor", one "class or function" expected.',
 		});
 	});
 
@@ -174,7 +174,7 @@ describe('NativeSchemaProvider::', function () {
 			it('should throw if bad defaultValue.', function () {
 				assert.throws(() => preset.Schema(null), {
 					name: 'TypeError',
-					message: `Invalid "defaultValue", one "${preset.name.toLowerCase()}" expected.`
+					message: `Invalid "defaultValue", one "${preset.name.toLowerCase()}" expected.`,
 				});
 			});
 
@@ -199,7 +199,7 @@ describe('NativeSchemaProvider::', function () {
 		it('should throw if bad min.', function () {
 			const expected = {
 				name: 'TypeError',
-				message: 'Invalid "min", one "number or [number]" expected.'
+				message: 'Invalid "min", one "number or [number]" expected.',
 			};
 
 			assert.throws(() => Preset.NumberRange(null), expected);
@@ -210,7 +210,7 @@ describe('NativeSchemaProvider::', function () {
 		it('should throw if bad max.', function () {
 			const expected = {
 				name: 'TypeError',
-				message: 'Invalid "max", one "number or [number]" expected.'
+				message: 'Invalid "max", one "number or [number]" expected.',
 			};
 
 			assert.throws(() => Preset.NumberRange(0, null), expected);
@@ -220,7 +220,7 @@ describe('NativeSchemaProvider::', function () {
 
 		it('shoud throw if min >= max', function () {
 			assert.throws(() => Preset.NumberRange(100, 0), {
-				message: 'It should be min < max.'
+				message: 'It should be min < max.',
 			});
 		});
 
@@ -267,7 +267,7 @@ describe('NativeSchemaProvider::', function () {
 		it('should throw if bad base.', function () {
 			assert.throws(() => Preset.IntegerMultipleOf(0.3), {
 				name: 'TypeError',
-				message: 'Invalid "base", one "interger" expected.'
+				message: 'Invalid "base", one "interger" expected.',
 			});
 		});
 
@@ -296,14 +296,14 @@ describe('NativeSchemaProvider::', function () {
 		it('should throw if bad pattern.', function () {
 			assert.throws(() => Preset.StringPattern(), {
 				name: 'TypeError',
-				message: 'Invalid "pattern", one "RegExp" expected.'
+				message: 'Invalid "pattern", one "RegExp" expected.',
 			});
 		});
 
 		it('should throw if bad name.', function () {
 			assert.throws(() => Preset.StringPattern(/a/, null), {
 				name: 'TypeError',
-				message: 'Invalid "pattern name", one "string" expected.'
+				message: 'Invalid "pattern name", one "string" expected.',
 			});
 		});
 
@@ -331,14 +331,14 @@ describe('NativeSchemaProvider::', function () {
 		it('should throw if bad min.', function () {
 			assert.throws(() => Preset.StringLength(-1), {
 				name: 'TypeError',
-				message: 'Invalid "min", one "integer >= 0" expected.'
+				message: 'Invalid "min", one "integer >= 0" expected.',
 			});
 		});
 
 		it('should throw if bad max', function () {
 			assert.throws(() => Preset.StringLength(10, 9), {
 				name: 'TypeError',
-				message: 'Invalid "max", one "integer >= min" expected.'
+				message: 'Invalid "max", one "integer >= min" expected.',
 			});
 		});
 

@@ -9,7 +9,7 @@ const DEFAULT_OPTIONS = {
 	items: any => any,
 	minLength: 0,
 	maxLength: Number.MAX_SAFE_INTEGER,
-	key: (_item, index) => index
+	key: (_item, index) => index,
 };
 
 const parseArrayOptions = (_options) => {
@@ -30,7 +30,7 @@ const parseArrayOptions = (_options) => {
 		items: _items = DEFAULT_OPTIONS.items,
 		minLength: _minLength = DEFAULT_OPTIONS.minLength,
 		maxLength: _maxLength = DEFAULT_OPTIONS.maxLength,
-		key: _key = DEFAULT_OPTIONS.key
+		key: _key = DEFAULT_OPTIONS.key,
 	} = _options;
 
 	if (!Type.Native.Function(_items)) {

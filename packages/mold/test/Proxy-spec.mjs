@@ -5,14 +5,14 @@ describe('Normalizer::', function () {
 	it('should throw if bad schema.', function () {
 		assert.throws(() => Normalizer(), {
 			name: 'TypeError',
-			message: 'Invalid "schema", one "function" expected.'
+			message: 'Invalid "schema", one "function" expected.',
 		});
 	});
 
 	it('should throw if bad catcher.', function () {
 		assert.throws(() => Normalizer(() => {}, null), {
 			name: 'TypeError',
-			message: 'Invalid "caught", one "function" expected.'
+			message: 'Invalid "caught", one "function" expected.',
 		});
 	});
 
@@ -51,14 +51,14 @@ describe('Circular::', function () {
 	it('should throw if bad proxy.', function () {
 		assert.throws(() => Circular(), {
 			name: 'TypeError',
-			message: 'Invalid "proxy", one "function" expected.'
+			message: 'Invalid "proxy", one "function" expected.',
 		});
 	});
 
 	it('should throw if bad proxy() returns.', function () {
 		assert.throws(() => Circular(() => null), {
 			name: 'TypeError',
-			message: 'Invalid "referenced schema", one "function" expected.'
+			message: 'Invalid "referenced schema", one "function" expected.',
 		});
 	});
 
@@ -88,14 +88,14 @@ describe('Custom::', function () {
 	it('should throw if bad schema.', function () {
 		assert.throws(() => Custom(), {
 			name: 'TypeError',
-			message: 'Invalid "schema", one "function" expected.'
+			message: 'Invalid "schema", one "function" expected.',
 		});
 	});
 
 	it('should throw if bad proxy.', function () {
 		assert.throws(() => Custom(() => {}, null), {
 			name: 'TypeError',
-			message: 'Invalid "proxy", one "function" expected.'
+			message: 'Invalid "proxy", one "function" expected.',
 		});
 	});
 

@@ -12,32 +12,32 @@ describe('Catcher::Simple', function () {
 						if (!_empty) {
 							throw new Error('baz');
 						}
-					}])
+					}]),
 				}),
-				key: (item) => item.bar[0]
-			})
+				key: (item) => item.bar[0],
+			}),
 		});
 
 		const normalize = Normalizer(schema, Catcher.Simple);
 
 		assert.throws(() => normalize({ foo: [{ bar: [1, null] }] }), {
 			name: 'TypeError',
-			message: 'Invalid ".foo[0].bar<1>", one "unknown" expected.\nError: baz'
+			message: 'Invalid ".foo[0].bar<1>", one "unknown" expected.\nError: baz',
 		});
 
 		assert.throws(() => normalize({ foo: [{ bar: [true] }] }), {
 			name: 'TypeError',
-			message: 'Invalid ".foo[0].bar<0>", one required "number" expected.'
+			message: 'Invalid ".foo[0].bar<0>", one required "number" expected.',
 		});
 
 		assert.throws(() => normalize({ foo: [null, null, null] }), {
 			name: 'TypeError',
-			message: 'Invalid ".foo", one "array" expected.\nLength should be 0-2'
+			message: 'Invalid ".foo", one "array" expected.\nLength should be [0, 2]',
 		});
 
 		assert.throws(() => normalize({ foo: [{ bar: [1] }, { bar: [1] }] }), {
 			name: 'TypeError',
-			message: 'Invalid ".foo", one "array" expected.\nThe element at [1] is duplicated.'
+			message: 'Invalid ".foo", one "array" expected.\nThe element at [1] is duplicated.',
 		});
 	});
 });

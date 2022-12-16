@@ -51,7 +51,7 @@ export const ObjectSchema = (schemaMap = {}, ...schemaOptions) => {
 				}
 			} catch (error) {
 				cause.setType('ObjectProperty').append({
-					key, explicit: true
+					key, explicit: true,
 				}).throw(error);
 			}
 		}
@@ -62,7 +62,7 @@ export const ObjectSchema = (schemaMap = {}, ...schemaOptions) => {
 			if (!hasPropertySchema) {
 				cause.setType('Value').append({
 					noAdditionalProperty: true,
-					preservedPropertyList
+					preservedPropertyList,
 				}).throw();
 			}
 
@@ -71,7 +71,7 @@ export const ObjectSchema = (schemaMap = {}, ...schemaOptions) => {
 					object[key] = propertySchema(extra[key], false);
 				} catch (error) {
 					cause.setType('ObjectProperty').append({
-						key, explicit: false
+						key, explicit: false,
 					}).throw(error);
 				}
 			}

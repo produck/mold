@@ -34,21 +34,21 @@ describe('Simplex::', function () {
 		it('should throw if bad normalize.', function () {
 			assert.throws(() => Simplex.Schema(null), {
 				name: 'TypeError',
-				message: 'Invalid "normalize", one "function" expected.'
+				message: 'Invalid "normalize", one "function" expected.',
 			});
 		});
 
 		it('should throw if bad expected.', function () {
 			assert.throws(() => Simplex.Schema(() => {}, null), {
 				name: 'TypeError',
-				message: 'Invalid "expected", one "string" expected.'
+				message: 'Invalid "expected", one "string" expected.',
 			});
 		});
 
 		it('should throw if bad required.', function () {
 			assert.throws(() => Simplex.Schema(() => {}, '', null), {
 				name: 'TypeError',
-				message: 'Invalid "required", one "boolean" expected.'
+				message: 'Invalid "required", one "boolean" expected.',
 			});
 		});
 
@@ -57,7 +57,7 @@ describe('Simplex::', function () {
 
 			assert.throws(() => schema(null, null), {
 				name: 'TypeError',
-				message: 'Invalid "_empty", one "boolean" expected.'
+				message: 'Invalid "_empty", one "boolean" expected.',
 			});
 		});
 	});
@@ -107,7 +107,7 @@ describe('Simplex::', function () {
 
 				assert.throws(() => parser([null, null, null]),	 {
 					name: 'TypeError',
-					message: 'Invalid "options", one "tuple(length<=2)" expected.'
+					message: 'Invalid "options", one "tuple(length<=2)" expected.',
 				});
 			});
 
@@ -116,12 +116,12 @@ describe('Simplex::', function () {
 
 				assert.throws(() => parser([1]),	{
 					name: 'TypeError',
-					message: 'Invalid "options<0>", one "string or function or null" expected.'
+					message: 'Invalid "options<0>", one "string or function or null" expected.',
 				});
 
 				assert.throws(() => parser([1, null]),	{
 					name: 'TypeError',
-					message: 'Invalid "options<0>", one "string" expected.'
+					message: 'Invalid "options<0>", one "string" expected.',
 				});
 			});
 
@@ -130,7 +130,7 @@ describe('Simplex::', function () {
 
 				assert.throws(() => parser(['1', 1]),	{
 					name: 'TypeError',
-					message: 'Invalid "options<1>", one "function or null" expected.'
+					message: 'Invalid "options<1>", one "function or null" expected.',
 				});
 			});
 
@@ -148,7 +148,7 @@ describe('Simplex::', function () {
 		it('should throw if bad validate.', function () {
 			assert.throws(() => Simplex.Value(), {
 				name: 'TypeError',
-				message: 'Invalid "validate", one "function" expected.'
+				message: 'Invalid "validate", one "function" expected.',
 			});
 		});
 
@@ -184,14 +184,14 @@ describe('Simplex::', function () {
 		it('should throw if bad schemaMap.', function () {
 			assert.throws(() => Simplex.Object(null), {
 				name: 'TypeError',
-				message: 'Invalid "schemaMap", one "plain object" expected.'
+				message: 'Invalid "schemaMap", one "plain object" expected.',
 			});
 		});
 
 		it('should throw if bad schema in schemaMap', function () {
 			assert.throws(() => Simplex.Object({ a: null }), {
 				name: 'TypeError',
-				message: 'Invalid "schemaMap["a"]", one "function" expected.'
+				message: 'Invalid "schemaMap["a"]", one "function" expected.',
 			});
 		});
 
@@ -224,7 +224,7 @@ describe('Simplex::', function () {
 				const schema = Simplex.Object({
 					foo: () => {
 						throw new Error('bar');
-					}
+					},
 				});
 
 				assert.throws(() => schema({}));
@@ -232,7 +232,7 @@ describe('Simplex::', function () {
 
 			it('should throw if bad [PROPERTY] schema.', function () {
 				assert.throws(() => Simplex.Object({ [PROPERTY]: 1 }), {
-					message: 'Invalid "schemaMap[@@PROPERTY]", one "function" expected.'
+					message: 'Invalid "schemaMap[@@PROPERTY]", one "function" expected.',
 				});
 			});
 
@@ -246,7 +246,7 @@ describe('Simplex::', function () {
 				const schema = Simplex.Object({
 					[PROPERTY]: () => {
 						throw new Error('bar');
-					}
+					},
 				});
 
 				assert.throws(() => schema({ foo: 1 }));
@@ -258,21 +258,21 @@ describe('Simplex::', function () {
 		it('should throw if bad options.', function () {
 			assert.throws(() => Simplex.Array(null), {
 				name: 'TypeError',
-				message: 'Invalid "options", one "function or object" expected.'
+				message: 'Invalid "options", one "function or object" expected.',
 			});
 		});
 
 		it('should throw if bad options.items', function () {
 			assert.throws(() => Simplex.Array({ items: null }), {
 				name: 'TypeError',
-				message: 'Invalid ".items", one "function" expected.'
+				message: 'Invalid ".items", one "function" expected.',
 			});
 		});
 
 		it('should throw if bad options.minLength', function () {
 			const expected = {
 				name: 'TypeError',
-				message: 'Invalid ".minLength", one "integer >= 0" expected.'
+				message: 'Invalid ".minLength", one "integer >= 0" expected.',
 			};
 
 			assert.throws(() => Simplex.Array({ minLength: -1 }), expected);
@@ -282,7 +282,7 @@ describe('Simplex::', function () {
 		it('should throw if bad options.maxLength', function () {
 			const expected = {
 				name: 'TypeError',
-				message: 'Invalid ".maxLength", one "integer >= minLength" expected.'
+				message: 'Invalid ".maxLength", one "integer >= minLength" expected.',
 			};
 
 			assert.throws(() => Simplex.Array({ maxLength: null }), expected);
@@ -292,7 +292,7 @@ describe('Simplex::', function () {
 		it('should throw if bad options.key', function () {
 			const expected = {
 				name: 'TypeError',
-				message: 'Invalid ".key", one "function" expected.'
+				message: 'Invalid ".key", one "function" expected.',
 			};
 
 			assert.throws(() => Simplex.Array({ key: null }), expected);
@@ -335,7 +335,7 @@ describe('Simplex::', function () {
 			it('should throw if bad length.', function () {
 				const schema = Simplex.Array({
 					minLength: 4,
-					maxLength: 5
+					maxLength: 5,
 				});
 
 				assert.throws(() => schema([]));
@@ -359,14 +359,14 @@ describe('Simplex::', function () {
 		it('should throw if bad schemaList.', function () {
 			assert.throws(() => Simplex.Tuple(null), {
 				name: 'TypeError',
-				message: 'Invalid "schemaList", one "array" expected.'
+				message: 'Invalid "schemaList", one "array" expected.',
 			});
 		});
 
 		it('should throw if a bad schema in schemaList.', function () {
 			assert.throws(() => Simplex.Tuple([0]), {
 				name: 'TypeError',
-				message: 'Invalid "schemaList[0]", one "function" expected.'
+				message: 'Invalid "schemaList[0]", one "function" expected.',
 			});
 		});
 
@@ -386,7 +386,7 @@ describe('Simplex::', function () {
 			it('should get a tuple with default value.', function () {
 				const schema = Simplex.Tuple([
 					() => 'foo',
-					() => 1
+					() => 1,
 				]);
 
 				assert.deepEqual(schema([]), ['foo', 1]);

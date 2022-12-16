@@ -16,8 +16,8 @@ export const OptionsParser = (expected = 'valid value', DefaultValue = null) => 
 			DefaultValue,
 			toSchemaArgs: () => [
 				options.expected,
-				Type.Helper.Null(options.DefaultValue)
-			]
+				Type.Helper.Null(options.DefaultValue),
+			],
 		};
 
 		const [_0, _1] = _options;

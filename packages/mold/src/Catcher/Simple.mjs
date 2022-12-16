@@ -30,22 +30,22 @@ const CauseTypeHandler = {
 	},
 	['ArrayItem']: (cause, state) => state.path.push({
 		type: 'array',
-		value: cause.detail.index
+		value: cause.detail.index,
 	}),
 	['ObjectProperty']: (cause, state) => state.path.push({
 		type: 'object',
-		value: cause.detail.key
+		value: cause.detail.key,
 	}),
 	['TupleElement']: (cause, state) => state.path.push({
 		type: 'tuple',
-		value: cause.detail.index
-	})
+		value: cause.detail.index,
+	}),
 };
 
 const SectionSerializer = {
 	['object']: key => `.${key}`,
 	['array']: index => `[${index}]`,
-	['tuple']: index => `<${index}>`
+	['tuple']: index => `<${index}>`,
 };
 
 export const SimpleCatcher = topCase => {
@@ -53,7 +53,7 @@ export const SimpleCatcher = topCase => {
 		path: [],
 		required: false,
 		expected: 'unknown',
-		tail: null
+		tail: null,
 	};
 
 	for (const cause of CauseReader(topCase)) {
@@ -75,7 +75,7 @@ export const SimpleCatcher = topCase => {
 	const sectionList = [
 		`Invalid "${pathRole}", one `,
 		...(state.required ? ['required '] : []),
-		`"${state.expected}" expected.`
+		`"${state.expected}" expected.`,
 	];
 
 	if (!Type.Helper.Null(state.tail)) {

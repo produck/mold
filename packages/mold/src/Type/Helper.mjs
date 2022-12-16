@@ -18,5 +18,5 @@ export {
 	isArray as Array,
 	isRegExp as RegExp,
 	isError as Error,
-	isPlainObjectLike as PlainObjectLike
+	isPlainObjectLike as PlainObjectLike,
 };

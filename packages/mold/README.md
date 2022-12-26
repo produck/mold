@@ -1,5 +1,5 @@
 # @produck/mold
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/produck/mold/Node.js%20CI)](https://github.com/produck/mold/actions/workflows/node.js.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/produck/mold/node.js.yml)](https://github.com/produck/mold/actions/workflows/node.js.yml)
 [![Coveralls](https://img.shields.io/coveralls/github/produck/mold)](https://coveralls.io/github/produck/mold)
 [![npm (scoped)](https://img.shields.io/npm/v/@produck/mold)](https://www.npmjs.com/package/@produck/mold)
 [![npm](https://img.shields.io/npm/dw/@produck/mold)](https://www.npmjs.com/package/@produck/mold)

@@ -2,10 +2,14 @@ import * as Type from './Type/index.mjs';
 import * as Utils from './Utils/index.mjs';
 import * as Catcher from './Catcher/index.mjs';
 
-export const Normalizer = (schema, catcher = Catcher.Simple) => {
+const assertSchema = any => {
 	if (!Type.Native.Function(schema)) {
 		Utils.throwError('schema', 'function');
 	}
+};
+
+export const Normalizer = (schema, catcher = Catcher.Simple) => {
+	assertSchema(schema);
 
 	if (!Type.Native.Function(catcher)) {
 		Utils.throwError('caught', 'function');
@@ -15,7 +19,21 @@ export const Normalizer = (schema, catcher = Catcher.Simple) => {
 		try {
 			return schema(args[0], args.length === 0);
 		} catch (cause) {
-			catcher(cause);
+			return catcher(cause);
+		}
+	};
+};
+
+export const Validator = schema => {
+	assertSchema(schema);
+
+	return any => {
+		try {
+			schema(any, false);
+
+			return true;
+		} catch {
+			return false;
 		}
 	};
 };

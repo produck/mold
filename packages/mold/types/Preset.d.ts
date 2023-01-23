@@ -23,7 +23,7 @@ export const OrNull: <
 ) => CustomSchema | Schema<null>;
 
 export const Instance: <
-	CustomConstructor extends abstract new (...args) => any
+	CustomConstructor extends abstract new (...args: any[]) => any
 >(
 	/**
 	 * Anything can be used as a constructor

@@ -63,6 +63,7 @@ export const Custom: CustomSchema;
 export { Custom as Cust };
 
 export const Normalizer: NormalizerConstructor;
+export function Validator(schema: Schema): boolean;
 
 export namespace Utils {
 	const throwError: (role: string, expected: string) => never;

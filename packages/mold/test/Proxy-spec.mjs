@@ -1,5 +1,5 @@
-import assert from 'node:assert';
-import { Normalizer, Circular, Custom, Catcher } from '../src/index.mjs';
+import assert from 'node:assert/strict';
+import { Normalizer, Circular, Custom, Catcher, Validator } from '../src/index.mjs';
 
 describe('Normalizer::', function () {
 	it('should throw if bad schema.', function () {
@@ -43,6 +43,29 @@ describe('Normalizer::', function () {
 			}, Catcher.Throw);
 
 			assert.throws(() => normalize());
+		});
+	});
+});
+
+describe('::Validator()', function () {
+	it('should throw if bad schema.', function () {
+		assert.throws(() => Validator(), {
+			name: 'TypeError',
+			message: 'Invalid "schema", one "function" expected.',
+		});
+	});
+
+	describe('::validate()', function () {
+		it('should be true.', function () {
+			const isValid = Validator(() => {});
+
+			assert.equal(isValid(), true);
+		});
+
+		it('should be false.', function () {
+			const isValid = Validator(() => { throw null; });
+
+			assert.equal(isValid(), false);
 		});
 	});
 });

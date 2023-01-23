@@ -3,7 +3,7 @@ import * as Utils from './Utils/index.mjs';
 import * as Catcher from './Catcher/index.mjs';
 
 const assertSchema = any => {
-	if (!Type.Native.Function(schema)) {
+	if (!Type.Native.Function(any)) {
 		Utils.throwError('schema', 'function');
 	}
 };

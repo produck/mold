@@ -3,8 +3,6 @@ import * as Utils from './Utils/index.mjs';
 import * as Simplex from './Simplex/index.mjs';
 import * as Compound from './Compound/index.mjs';
 
-export const Undefined = (required = false) => Constant(undefined, required);
-
 export const Any = (...args) => {
 	if (args.length > 1) {
 		Utils.throwError('arguments', 'arguments(length<=1)');
@@ -63,7 +61,6 @@ export const Enum = (valueList, defaultIndex = 0) => {
 };
 
 export const Null = (required = false) => Constant(null, required);
-
 export const NotNull = Compound.Not(Null(false));
 
 export const OrNull = (schema, required = false) => {
@@ -74,14 +71,25 @@ export const OrNull = (schema, required = false) => {
 	return Compound.Or([schema, Null(required)]);
 };
 
-export const Instance = Constructor => {
+export const Undefined = (required = false) => Constant(undefined, required);
+export const NotUndefined = Compound.Not(Undefined(false));
+
+export const OrUndefined = (schema, required = false) => {
+	if (!Type.Native.Function(schema)) {
+		Utils.throwError('schema', 'function');
+	}
+
+	return Compound.Or([schema, Undefined(required)]);
+};
+
+export const Instance = (Constructor, DefaultValue = null) => {
 	if (!Type.Native.Function(Constructor)) {
 		Utils.throwError('Constructor', 'class or function');
 	}
 
 	const validate = any => any instanceof Constructor;
 
-	return Simplex.Value(validate, `${Constructor.name} instance`);
+	return Simplex.Value(validate, `${Constructor.name} instance`, DefaultValue);
 };
 
 const SchemaProvider = (validate, expected) => {

@@ -1,6 +1,5 @@
 import { Schema } from './schema';
 
-export const Undefined: (required?: boolean) => Schema<undefined>;
 export const Any: (defaultValue?: any) => Schema<any>;
 
 export const Constant: <Type>(
@@ -22,6 +21,16 @@ export const OrNull: <
 	schema: CustomSchema,
 	required?: boolean
 ) => CustomSchema | Schema<null>;
+
+export const Undefined: (required?: boolean) => Schema<undefined>;
+export const NotUndefined: Schema<Exclude<any, undefined>>;
+
+export const OrUndefined: <
+	CustomSchema extends Schema = Schema
+>(
+	schema: CustomSchema,
+	required?: boolean
+) => CustomSchema | Schema<undefined>;
 
 export const Instance: <
 	CustomConstructor extends abstract new (...args: any[]) => any

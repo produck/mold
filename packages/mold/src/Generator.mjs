@@ -37,3 +37,7 @@ export const Validator = schema => {
 		}
 	};
 };
+
+const UNDEFINED = Symbol.for('Mold::Undefined');
+
+export const Typer = () => UNDEFINED;

@@ -22,6 +22,8 @@ export { Utils, Utils as U };
 import * as Catcher from './Catcher/index.mjs';
 export { Catcher };
 
-export { Normalizer, Validator } from './Normalizer.mjs';
+import * as Generator from './Generator.mjs';
+export { Generator as Gen, Generator as G };
+export const { Normalizer }  = Generator;
 
 export { PROPERTY } from './Simplex/Object.mjs';

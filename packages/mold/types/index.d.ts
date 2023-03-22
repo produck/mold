@@ -13,6 +13,10 @@ export { Compound, Compound as Comp, Compound as C };
 import * as Preset from './Preset';
 export { Preset, Preset as Pre, Preset as P };
 
+import * as Generator from './Generator';
+export { Generator, Generator as Gen, Generator as G };
+export const Normalizer: Generator.NormalizerConstructor;
+
 export namespace Catcher {
 	const Throw: () => {};
 	const Simple: () => {};
@@ -45,25 +49,11 @@ interface CustomSchema {
 	): CustomSchema;
 }
 
-interface Normalizer<Type> {
-	(_value: Type): Type;
-}
-
-interface NormalizerConstructor {
-	<CustomSchema extends Schema>(
-		schema: CustomSchema,
-		caught?: Function
-	): Normalizer<ReturnType<CustomSchema>>;
-}
-
 export const Circular: CircularSchema;
 export { Circular as Circ };
 
 export const Custom: CustomSchema;
 export { Custom as Cust };
-
-export const Normalizer: NormalizerConstructor;
-export function Validator(schema: Schema): boolean;
 
 export namespace Utils {
 	const throwError: (role: string, expected: string) => never;
@@ -77,4 +67,5 @@ export namespace Utils {
 }
 
 export { Utils as U };
+
 export const PROPERTY: symbol;
